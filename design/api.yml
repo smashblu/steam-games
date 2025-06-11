@@ -4,11 +4,39 @@ info:
   version: 0.1
   license:
     name: MIT
+servers:
+  - url: <URL>
 paths:
   /games:
     get:
       summary: List all games in library
       operationId: listGames
+      tags:
+      parameters:
+        - name: limit
+          in: query
+          description: How many items to return at one time (max 100)
+          required: false
+          schema:
+            type: integer
+            maximum: 100
+            format: int32
+      responses:
+        '200':
+          description: A paged array of games
+          headers:
+    post:
+      summary: Add a game to library
+      operationId: addGame
+      tags:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Library'
+        required: true
+      responses:
+
 components:
   schemas:
     Library:
