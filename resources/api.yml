@@ -1,0 +1,48 @@
+openapi: 3.0.0
+info:
+  title: Steam Library API
+  version: 0.1
+  license:
+    name: MIT
+paths:
+  /games:
+    get:
+      summary: List all games in library
+      operationId: listGames
+components:
+  schemas:
+    Library:
+      type: object
+      properties:
+        id:
+          type: integer
+        username:
+          type: string
+        required:
+          - libraryId
+          - username
+    Games:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        release_date:
+          type: date
+        rating:
+          - "E"
+          - "E10+"
+          - "T"
+          - "M"
+          - "AO"
+          - "RP"
+        current_price:
+          type: float
+    Publisher:
+      type:
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
