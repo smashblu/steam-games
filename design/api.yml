@@ -25,6 +25,12 @@ paths:
         '200':
           description: A paged array of games
           headers:
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
     post:
       summary: Add a game to library
       operationId: addGame
@@ -36,11 +42,20 @@ paths:
               $ref: '#/components/schemas/Library'
         required: true
       responses:
-
+        '201':
+          description: Null response
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 components:
   schemas:
     Library:
       type: object
+      required:
+        - id
       properties:
         id:
           type: integer
@@ -51,6 +66,8 @@ components:
           - username
     Games:
       type: object
+      required:
+        - id
       properties:
         id:
           type: integer
@@ -68,9 +85,22 @@ components:
         current_price:
           type: float
     Publisher:
-      type:
+      type: object
+      required:
+        - id
       properties:
         id:
           type: integer
         name:
+          type: string
+    Error:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
           type: string
