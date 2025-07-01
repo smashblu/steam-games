@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: Steam Library API
-  version: 0.1
+  version: "0.1"
   license:
     name: MIT
 servers:
@@ -12,6 +12,7 @@ paths:
       summary: List all games in library
       operationId: listGames
       tags:
+      - games
       parameters:
         - name: limit
           in: query
@@ -35,6 +36,7 @@ paths:
       summary: Add a game to library
       operationId: addGame
       tags:
+      - games
       requestBody:
         content:
           application/json:
@@ -74,8 +76,10 @@ components:
         title:
           type: string
         release_date:
-          type: date
+          type: string
         rating:
+          type: array
+          items:
           - "E"
           - "E10+"
           - "T"
@@ -83,7 +87,7 @@ components:
           - "AO"
           - "RP"
         current_price:
-          type: float
+          type: number
     Publisher:
       type: object
       required:
