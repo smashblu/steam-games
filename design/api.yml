@@ -1,3 +1,4 @@
+
 openapi: 3.0.0
 info:
   title: Steam Library API
@@ -52,7 +53,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '/components/schemas/Games'
+                $ref: '#/components/schemas/Games'
         default:
           description: unexpected error
           content:
@@ -62,14 +63,14 @@ paths:
   /games/{gameId}:
     get:
       summary: List game by ID
-      operationId: gameById
+      operationId: showGameById
       tags:
       - games
       parameters:
         - name: gameId
           in: path
           required: true
-          description: The id of the game to retrieve
+          description: The ID of the game to retrieve
           schema:
             type: string
       responses:
@@ -78,7 +79,32 @@ paths:
           content:
             application/json:
               schema:
+                $ref: '#/components/schemas/Games'
+        default: 
+          description: unexptected error
+          content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Error'
+    put:
+      summary: Update game by ID
+      operationId: updateGameById
+      tags:
+      - games
+      parameters:
+        - name: gameId
+          in: path
+          required: true
+          description: The ID of the game to update
+      responses:
+        '201':
+          description: Null response
+          content:
+            application/json:
+              schema:
                 $ref: '/components/schemas/Games'
+        '204':
+          description: No content
         default: 
           description: unexptected error
           content:
