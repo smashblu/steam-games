@@ -25,7 +25,10 @@ paths:
       responses:
         '200':
           description: A paged array of games
-          headers:
+          content:
+            application/json:
+              schema:
+                $ref: '/components/schemas/Games'
         default:
           description: unexpected error
           content:
@@ -46,12 +49,42 @@ paths:
       responses:
         '201':
           description: Null response
+          content:
+            application/json:
+              schema:
+                $ref: '/components/schemas/Games'
         default:
           description: unexpected error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  /games/{gameId}:
+    get:
+      summary: List game by ID
+      operationId: gameById
+      tags:
+      - games
+      parameters:
+        - name: gameId
+          in: path
+          required: true
+          description: The id of the game to retrieve
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: '/components/schemas/Games'
+        default: 
+          description: unexptected error
+          content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Error'
 components:
   schemas:
     Library:
