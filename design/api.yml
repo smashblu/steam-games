@@ -61,7 +61,7 @@ paths:
                 $ref: '#/components/schemas/Error'
   /games/{gameId}:
     get:
-      summary: List game by ID
+      summary: Get game by ID
       operationId: showGameById
       tags:
       - games
