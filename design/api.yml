@@ -1,168 +1,250 @@
 openapi: 3.0.0
 info:
-  title: Steam Library API
-  version: "0.1"
-  license:
-    name: MIT
+  title: Steam library API
+  version: 1.0.0
+  description: An API for managing a Steam games library
 servers:
-  - url: <URL>
+  - url: 'https://smashblu.github.io/steam-games/'
 paths:
   /games:
     get:
-      summary: List all games in library
-      operationId: listGames
       tags:
-      - games
-      parameters:
-        - name: limit
-          in: query
-          description: How many items to return at one time (max 100)
-          required: false
-          schema:
-            type: integer
-            maximum: 100
-            format: int32
+        - games
+      summary: Get game list
       responses:
         '200':
-          description: A paged array of games
           content:
             application/json:
               schema:
-                $ref: '/components/schemas/Games'
-        default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+                type: array
+                items:
+                  $ref: '#/components/schemas/GameSummary'
+                title: GetGameListOk
+          description: A JSON array containing game objects.
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalServerErrror'
+      parameters:
+        - $ref: '#/components/parameters/title'
+        - $ref: '#/components/parameters/publisherId'
+      description: >
+        Fetches a comprehensive list of all games available in the library. Each
+        game object includes essential details such as the game's ID, name, and
+        publisher.
+      operationId: getGameList
     post:
-      summary: Add a game to library
-      operationId: addGame
       tags:
-      - games
+        - games
+      summary: Create game
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Game'
+          description: The request was successful, and a new resource was created. The URI
+            of the newly created resource can be found in the response's
+            Location header.
+        '400':
+          $ref: '#/components/responses/BadRequest'
+      description: >
+        Creates a new game entry in the library. The request must include the
+        game's name.
+      operationId: createGame
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Library'
+              $ref: '#/components/schemas/GameCreate'
         required: true
-      responses:
-        '201':
-          description: Null response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Games'
-        default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+        description: Details of the game to be created.
+      parameters: []
   /games/{gameId}:
     get:
-      summary: Get game by ID
-      operationId: showGameById
       tags:
-      - games
-      parameters:
-        - name: gameId
-          in: path
-          required: true
-          description: The ID of the game to retrieve
-          schema:
-            type: string
+        - games
+      summary: Get game
       responses:
         '200':
-          description: Expected response to a valid request
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Library'
-        default: 
-          description: unexptected error
-          content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/Error'
-    put:
-      summary: Update game by ID
-      operationId: updateGameById
-      tags:
-      - games
+                $ref: '#/components/schemas/Game'
+          description: A JSON object containing the game details.
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerErrror'
       parameters:
-        - name: gameId
-          in: path
-          required: true
-          description: The ID of the game to update
+        - $ref: '#/components/parameters/gameId'
+      description: >
+        Fetches details of a specific game by its unique identifier. The
+        response includes the game's name and publisher.
+      operationId: getGame
+    delete:
+      tags:
+        - games
+      summary: Delete game
       responses:
-        '201':
-          description: Null response
+        '204':
           content:
             application/json:
               schema:
-                $ref: '/components/schemas/Library'
-        '204':
-          description: No content
-        default: 
-          description: unexptected error
-          content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/Error'
+                type: string
+                title: DeleteGameNoContent
+          description: The request was successful, but there is no content to return in
+            the response.
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '500':
+          $ref: '#/components/responses/InternalServerErrror'
+      parameters:
+        - $ref: '#/components/parameters/gameId'
+      description: >
+        Deletes a specific game from the library using its unique identifier.
+        The operation confirms successful deletion.
+      operationId: deleteGame
 components:
   schemas:
-    Library:
+    Game:
       type: object
       required:
-        - id
+        - gameId
+        - title
       properties:
-        id:
-          type: integer
-        username:
-          type: string
-        required:
-          - libraryId
-          - username
-    Games:
-      type: object
-      required:
-        - id
-      properties:
-        id:
+        gameId:
           type: integer
         title:
           type: string
+        rating:
+          type: string
         release_date:
           type: string
-        rating:
-          type: array
-          items:
-          - "E"
-          - "E10+"
-          - "T"
-          - "M"
-          - "AO"
-          - "RP"
         current_price:
-          type: number
+          type: integer
+        publisher:
+          $ref: '#/components/schemas/Publisher'
     Publisher:
       type: object
       required:
-        - id
+        - publisherId
+        - name
       properties:
-        id:
+        publisherId:
           type: integer
         name:
           type: string
-    Error:
+      description: Creator of games.
+    GameCreate:
       type: object
       required:
-        - code
-        - message
+        - gameId
+        - title
       properties:
-        code:
-          type: integer
-          format: int32
-        message:
+        title:
           type: string
+        gameId:
+          type: integer
+      description: Data transfer object for creating a new game.
+    GameSummary:
+      type: object
+      required:
+        - gameId
+        - publisher
+        - title
+        - release_date
+      properties:
+        gameId:
+          type: integer
+        title:
+          type: string
+        rating:
+          type: string
+        release_date:
+          type: string
+        current_price:
+          type: integer
+        publisher:
+          $ref: '#/components/schemas/Publisher'
+  responses:
+    Conflict:
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - message
+            properties:
+              message:
+                type: string
+      description: The request could not be completed due to a conflict with the
+        current state of the resource. Resolve the conflict and try again.
+    NotFound:
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - message
+            properties:
+              message:
+                type: string
+      description: The server cannot find the requested resource. The endpoint may be
+        invalid or the resource may no longer exist.
+    BadRequest:
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - message
+            properties:
+              message:
+                type: string
+      description: The server could not understand the request due to invalid syntax.
+        The client should modify the request and try again.
+    InternalServerErrror:
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - message
+            properties:
+              message:
+                type: string
+      description: The server encountered an unexpected condition that prevented it
+        from fulfilling the request. Report the issue to the support team if it
+        persists.
+  parameters:
+    title:
+      in: query
+      name: title
+      style: form
+      schema:
+        type: string
+      required: false
+      description: Filter the list of games according to the title.
+    publisherId:
+      name: publisherId
+      in: query
+      description: Filter the list of games accodring to the `publisherId`.
+      schema:
+        type: integer
+    gameId:
+      name: gameId
+      required: true
+      in: path
+      description: Path parameter to retrieve games by.
+      schema:
+        type: integer
+tags:
+  - name: games
+    description: Endpoints dealing with game entities.
