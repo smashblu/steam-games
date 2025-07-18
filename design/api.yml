@@ -28,10 +28,8 @@ paths:
       parameters:
         - $ref: '#/components/parameters/title'
         - $ref: '#/components/parameters/publisherId'
-      description: >
-        Fetches a comprehensive list of all games available in the library. Each
-        game object includes essential details such as the game's ID, name, and
-        publisher.
+      description: |
+        Fetches a comprehensive list of all games available in the library. Each game object includes essential details such as the game's name, ESRB rating, release date, current price, and publisher.
       operationId: getGameList
     post:
       tags:
@@ -43,14 +41,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Game'
-          description: The request was successful, and a new resource was created. The URI
-            of the newly created resource can be found in the response's
-            Location header.
+          description: 'The request was successful, and a new resource was created. The URI of the newly created resource can be found in the response''s Location header.'
         '400':
           $ref: '#/components/responses/BadRequest'
-      description: >
-        Creates a new game entry in the library. The request must include the
-        game's name.
+      description: |
+        Creates a new game entry in the library. The request must include the game's name.
       operationId: createGame
       requestBody:
         content:
@@ -60,7 +55,7 @@ paths:
         required: true
         description: Details of the game to be created.
       parameters: []
-  /games/{gameId}:
+  '/games/{gameId}':
     get:
       tags:
         - games
@@ -80,9 +75,8 @@ paths:
           $ref: '#/components/responses/InternalServerErrror'
       parameters:
         - $ref: '#/components/parameters/gameId'
-      description: >
-        Fetches details of a specific game by its unique identifier. The
-        response includes the game's name and publisher.
+      description: |
+        Fetches details of a specific game by its unique identifier. The response includes the game's name, ESRB rating, release date, current price, and publisher.
       operationId: getGame
     delete:
       tags:
@@ -95,8 +89,7 @@ paths:
               schema:
                 type: string
                 title: DeleteGameNoContent
-          description: The request was successful, but there is no content to return in
-            the response.
+          description: 'The request was successful, but there is no content to return in the response.'
         '400':
           $ref: '#/components/responses/BadRequest'
         '404':
@@ -107,10 +100,22 @@ paths:
           $ref: '#/components/responses/InternalServerErrror'
       parameters:
         - $ref: '#/components/parameters/gameId'
-      description: >
-        Deletes a specific game from the library using its unique identifier.
-        The operation confirms successful deletion.
+      description: |
+        Deletes a specific game from the library using its unique identifier. The operation confirms successful deletion.
       operationId: deleteGame
+  '/games/{publisherId}':
+    parameters:
+      - schema:
+          type: string
+        name: publisherId
+        in: path
+        required: true
+    get:
+      summary: Get game by publisher
+      tags: []
+      responses: {}
+      operationId: getGameByPublisher
+      description: 'Fetches details of games by publisher''s unique identifier. The response includes the game''s name, ESRB rating, release date, current price, and publisher.'
 components:
   schemas:
     Game:
@@ -173,6 +178,12 @@ components:
           type: integer
         publisher:
           $ref: '#/components/schemas/Publisher'
+    Schema:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
   responses:
     Conflict:
       content:
@@ -184,8 +195,7 @@ components:
             properties:
               message:
                 type: string
-      description: The request could not be completed due to a conflict with the
-        current state of the resource. Resolve the conflict and try again.
+      description: The request could not be completed due to a conflict with the current state of the resource. Resolve the conflict and try again.
     NotFound:
       content:
         application/json:
@@ -196,8 +206,7 @@ components:
             properties:
               message:
                 type: string
-      description: The server cannot find the requested resource. The endpoint may be
-        invalid or the resource may no longer exist.
+      description: The server cannot find the requested resource. The endpoint may be invalid or the resource may no longer exist.
     BadRequest:
       content:
         application/json:
@@ -208,8 +217,7 @@ components:
             properties:
               message:
                 type: string
-      description: The server could not understand the request due to invalid syntax.
-        The client should modify the request and try again.
+      description: The server could not understand the request due to invalid syntax. The client should modify the request and try again.
     InternalServerErrror:
       content:
         application/json:
@@ -220,9 +228,7 @@ components:
             properties:
               message:
                 type: string
-      description: The server encountered an unexpected condition that prevented it
-        from fulfilling the request. Report the issue to the support team if it
-        persists.
+      description: The server encountered an unexpected condition that prevented it from fulfilling the request. Report the issue to the support team if it persists.
   parameters:
     title:
       in: query
