@@ -82,10 +82,28 @@ paths:
       tags:
         - games
       summary: Delete game
+      responses:
+        '204':
+          content:
+            application/json:
+              schema:
+                type: string
+                title: DeleteGameNoContent
+          description: The request was successful, but there is no content to return in
+            the response.
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '500':
+          $ref: '#/components/responses/InternalServerErrror'
       parameters:
         - $ref: '#/components/parameters/gameId'
-      description: |
-        Deletes a specific game from the library using its unique identifier. The operation confirms successful deletion.
+      description: >
+        Deletes a specific game from the library using its unique identifier.
+        The operation confirms successful deletion.
       operationId: deleteGame
   /games/{publisherId}:
     parameters:
