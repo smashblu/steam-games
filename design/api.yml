@@ -28,7 +28,7 @@ paths:
       parameters:
         - $ref: '#/components/parameters/title'
         - $ref: '#/components/parameters/publisherId'
-      description: |
+      description: >
         Fetches a comprehensive list of all games available in the library. Each game object includes essential details such as the game's name, ESRB rating, release date, current price, and publisher.
       operationId: getGameList
     post:
@@ -44,7 +44,7 @@ paths:
           description: 'The request was successful, and a new resource was created. The URI of the newly created resource can be found in the response''s Location header.'
         '400':
           $ref: '#/components/responses/BadRequest'
-      description: |
+      description: >
         Creates a new game entry in the library. The request must include the game's name.
       operationId: createGame
       requestBody:
@@ -75,7 +75,7 @@ paths:
           $ref: '#/components/responses/InternalServerErrror'
       parameters:
         - $ref: '#/components/parameters/gameId'
-      description: |
+      description: >
         Fetches details of a specific game by its unique identifier. The response includes the game's name, ESRB rating, release date, current price, and publisher.
       operationId: getGame
     delete:
@@ -89,8 +89,8 @@ paths:
               schema:
                 type: string
                 title: DeleteGameNoContent
-          description: The request was successful, but there is no content to return in
-            the response.
+          description: >
+            The request was successful, but there is no content to return in the response.
         '400':
           $ref: '#/components/responses/BadRequest'
         '404':
