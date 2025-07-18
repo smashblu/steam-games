@@ -95,23 +95,20 @@ paths:
         in: path
         required: true
     get:
-      summary: Get game by publisher
       tags:
         - games
+      summary: Get game by publisher
       responses:
-        '204':
+        '200':
           content:
             application/json:
               schema:
-                type: string
-                title: DeleteGameNoContent
-          description: 'The request was successful, but there is no content to return in the response.'
+                $ref: '#/components/schemas/Game'
+          description: A JSON object containing the game details.
         '400':
           $ref: '#/components/responses/BadRequest'
         '404':
           $ref: '#/components/responses/NotFound'
-        '409':
-          $ref: '#/components/responses/Conflict'
         '500':
           $ref: '#/components/responses/InternalServerErrror'
       operationId: getGameByPublisher
