@@ -18,7 +18,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/GameSummary'
+                  $ref: '#/components/schemas/Game'
                 title: GetGameListOk
           description: A JSON array containing game objects.
         '400':
@@ -31,8 +31,7 @@ paths:
         - $ref: '#/components/parameters/releaseDate'
         - $ref: '#/components/parameters/currentPrice'
         - $ref: '#/components/parameters/publisherId'
-      description: >
-        Fetches a comprehensive list of all games available in the library. Each game object includes essential details such as the game's name, ESRB rating, release date, current price, and publisher.
+      description: Fetches a comprehensive list of all games available in the library. Each game object includes essential details such as the game's name, ESRB rating, release date, current price, and publisher.
       operationId: ListGames
     post:
       tags:
@@ -47,8 +46,7 @@ paths:
           description: 'The request was successful, and a new resource was created. The URI of the newly created resource can be found in the response''s Location header.'
         '400':
           $ref: '#/components/responses/BadRequest'
-      description: >
-        Creates a new game entry in the library. The request must include the game's name.
+      description: Creates a new game entry in the library. The request must include the game's name.
       operationId: createGame
       requestBody:
         content:
@@ -92,8 +90,7 @@ paths:
           $ref: '#/components/responses/InternalServerErrror'
       parameters:
         - $ref: '#/components/parameters/gameId'
-      description: >
-        Fetches details of a specific game by its unique identifier. The response includes the game's name, ESRB rating, release date, current price, and publisher.
+      description: Fetches details of a specific game by its unique identifier. The response includes the game's name, ESRB rating, release date, current price, and publisher.
       operationId: getGame
     delete:
       tags:
@@ -106,8 +103,7 @@ paths:
               schema:
                 type: string
                 title: DeleteGameNoContent
-          description: >
-            The request was successful, but there is no content to return in the response.
+          description: The request was successful, but there is no content to return in the response.
         '400':
           $ref: '#/components/responses/BadRequest'
         '404':
@@ -118,8 +114,7 @@ paths:
           $ref: '#/components/responses/InternalServerErrror'
       parameters:
         - $ref: '#/components/parameters/gameId'
-      description: >
-        Deletes a specific game from the library using its unique identifier.
+      description: Deletes a specific game from the library using its unique identifier.
         The operation confirms successful deletion.
       operationId: deleteGame
   /games/{publisherId}:
@@ -190,26 +185,6 @@ components:
         gameId:
           type: integer
       description: Data transfer object for creating a new game.
-    GameSummary:
-      type: object
-      required:
-        - gameId
-        - publisher
-        - title
-        - releaseDate
-      properties:
-        gameId:
-          type: integer
-        title:
-          type: string
-        rating:
-          type: string
-        releaseDate:
-          type: string
-        currentPrice:
-          type: integer
-        publisher:
-          $ref: '#/components/schemas/Publisher'
   responses:
     Conflict:
       content:
