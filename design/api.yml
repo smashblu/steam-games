@@ -55,6 +55,20 @@ paths:
         required: true
         description: Details of the game to be created.
       parameters: []
+    put:
+      tags:
+        - games
+      summary: Update game
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Game'
+          description: 'The request was successful, and a new resource was created. The URI of the newly created resource can be found in the response''s Location header.'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+      parameters: []
   /games/{gameId}:
     get:
       tags:
