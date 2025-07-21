@@ -10,7 +10,7 @@ paths:
     get:
       tags:
         - games
-      summary: Get game list
+      summary: List games
       responses:
         '200':
           content:
@@ -27,10 +27,13 @@ paths:
           $ref: '#/components/responses/InternalServerErrror'
       parameters:
         - $ref: '#/components/parameters/title'
+        - $ref: '#/components/parameters/rating'
+        - $ref: '#/components/parameters/releaseDate'
+        - $ref: '#/components/parameters/currentPrice'
         - $ref: '#/components/parameters/publisherId'
       description: >
         Fetches a comprehensive list of all games available in the library. Each game object includes essential details such as the game's name, ESRB rating, release date, current price, and publisher.
-      operationId: getGameList
+      operationId: ListGames
     post:
       tags:
         - games
@@ -159,9 +162,9 @@ components:
           type: string
         rating:
           type: string
-        release_date:
+        releaseDate:
           type: string
-        current_price:
+        currentPrice:
           type: integer
         publisher:
           $ref: '#/components/schemas/Publisher'
@@ -193,7 +196,7 @@ components:
         - gameId
         - publisher
         - title
-        - release_date
+        - releaseDate
       properties:
         gameId:
           type: integer
@@ -201,9 +204,9 @@ components:
           type: string
         rating:
           type: string
-        release_date:
+        releaseDate:
           type: string
-        current_price:
+        currentPrice:
           type: integer
         publisher:
           $ref: '#/components/schemas/Publisher'
@@ -261,10 +264,31 @@ components:
         type: string
       required: false
       description: Filter the list of games according to the title.
+    rating:
+      in: query
+      name: rating
+      schema:
+        type: string
+      required: false
+      description: Filter the list of games according to rating.
+    releaseDate:
+      in: query
+      name: releaseDate
+      schema:
+        type: string
+      required: false
+      description: Filter the list of games according to release date.
+    currentPrice:
+      in: query
+      name: currentPrice
+      schema:
+        type: integer
+      required: false
+      description: Filter the list of games according to price.
     publisherId:
       name: publisherId
       in: query
-      description: Filter the list of games accodring to the `publisherId`.
+      description: Filter the list of games accodring to the publisher.
       schema:
         type: integer
     gameId:
