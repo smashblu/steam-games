@@ -10,7 +10,7 @@ paths:
     get:
       tags:
         - games
-      summary: Get game list
+      summary: List games
       responses:
         '200':
           content:
@@ -30,7 +30,7 @@ paths:
         - $ref: '#/components/parameters/publisherId'
       description: >
         Fetches a comprehensive list of all games available in the library. Each game object includes essential details such as the game's name, ESRB rating, release date, current price, and publisher.
-      operationId: getGameList
+      operationId: ListGames
     post:
       tags:
         - games
