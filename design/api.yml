@@ -55,12 +55,6 @@ paths:
               $ref: '#/components/schemas/GameCreate'
         required: true
         description: Details of the game to be created.
-      parameters:
-        - $ref: '#/components/parameters/title'
-        - $ref: '#/components/parameters/rating'
-        - $ref: '#/components/parameters/releaseDate'
-        - $ref: '#/components/parameters/currentPrice'
-        - $ref: '#/components/parameters/publisherId'
     put:
       tags:
         - games
@@ -74,12 +68,6 @@ paths:
           description: 'The request was successful, and a new resource was created. The URI of the newly created resource can be found in the response''s Location header.'
         '400':
           $ref: '#/components/responses/BadRequest'
-      parameters:
-        - $ref: '#/components/parameters/title'
-        - $ref: '#/components/parameters/rating'
-        - $ref: '#/components/parameters/releaseDate'
-        - $ref: '#/components/parameters/currentPrice'
-        - $ref: '#/components/parameters/publisherId'
   /games/{gameId}:
     get:
       tags:
@@ -122,8 +110,6 @@ paths:
           $ref: '#/components/responses/Conflict'
         '500':
           $ref: '#/components/responses/InternalServerErrror'
-      parameters:
-        - $ref: '#/components/parameters/gameId'
       description: Deletes a specific game from the library using its unique identifier.
         The operation confirms successful deletion.
       operationId: deleteGame
