@@ -19,7 +19,7 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Game'
-                title: GetGameListOk
+                title: GameListOk
           description: A JSON array containing game objects.
         '400':
           $ref: '#/components/responses/BadRequest'
