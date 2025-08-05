@@ -1,0 +1,23 @@
+{
+  "name": "steam-games",
+  "version": "1.0.0",
+  "description": "An API for managing a Steam games library",
+  "keywords": [
+    "games"
+  ],
+  "homepage": "https://github.com/smashblu/steam-games#readme",
+  "bugs": {
+    "url": "https://github.com/smashblu/steam-games/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/smashblu/steam-games.git"
+  },
+  "license": "MIT",
+  "author": "smashblu",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
