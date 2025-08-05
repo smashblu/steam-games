@@ -69,6 +69,11 @@ app.get('/games', (req, res) => {
   res.send(dummyGames)
 })
 
+app.get('/games/:gameId', (req, res, next) => {
+  const gameNum = req.params['gameId']
+  res.send(dummyGames[gameNum - 1])
+})
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
