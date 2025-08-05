@@ -69,9 +69,20 @@ app.get('/games', (req, res) => {
   res.send(dummyGames)
 })
 
-app.get('/games/:gameId', (req, res, next) => {
+app.get('/games/gameId=:gameId', (req, res) => {
   const gameNum = req.params['gameId']
   res.send(dummyGames[gameNum - 1])
+})
+
+app.get('/games/publisherId=:publisherId', (req, res) => {
+  const pubNum = req.params['publisherId']
+  const pubList = []
+  for (game of dummyGames) {
+    if (game['publisher']['publisherId'] === parseInt(pubNum)) {
+      pubList.push(game)
+    }
+  }
+  res.send(pubList)
 })
 
 app.listen(port, () => {
