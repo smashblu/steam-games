@@ -52,22 +52,9 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/GameCreate'
+              $ref: '#/components/schemas/Game'
         required: true
         description: Details of the game to be created.
-    patch:
-      tags:
-        - games
-      summary: Update game
-      responses:
-        '201':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Game'
-          description: 'The request was successful, and a new resource was created. The URI of the newly created resource can be found in the response''s Location header.'
-        '400':
-          $ref: '#/components/responses/BadRequest'
   /games/{gameId}:
     get:
       tags:
@@ -91,6 +78,19 @@ paths:
         - $ref: '#/components/parameters/publisherId'
       description: Fetches details of a specific game by its unique identifier. The response includes the game's name, ESRB rating, release date, current price, and publisher.
       operationId: getGame
+    patch:
+      tags:
+        - games
+      summary: Update game
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Game'
+          description: 'The request was successful, and a new resource was created. The URI of the newly created resource can be found in the response''s Location header.'
+        '400':
+          $ref: '#/components/responses/BadRequest'
     delete:
       tags:
         - games
@@ -145,17 +145,6 @@ components:
         name:
           type: string
       description: Creator of games.
-    GameCreate:
-      type: object
-      required:
-        - gameId
-        - title
-      properties:
-        title:
-          type: string
-        gameId:
-          type: integer
-      description: Data transfer object for creating a new game.
   responses:
     Conflict:
       content:
