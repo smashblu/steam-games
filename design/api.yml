@@ -91,6 +91,11 @@ paths:
           description: 'The request was successful, and a new resource was created. The URI of the newly created resource can be found in the response''s Location header.'
         '400':
           $ref: '#/components/responses/BadRequest'
+      parameters:
+        - $ref: '#/components/parameters/gameId'
+      description: Updates a specific game from the library using its unique identifier.
+        The operation confirms successful update.
+      operationId: updateGame
     delete:
       tags:
         - games
@@ -111,6 +116,8 @@ paths:
           $ref: '#/components/responses/Conflict'
         '500':
           $ref: '#/components/responses/InternalServerErrror'
+      parameters:
+        - $ref: '#/components/parameters/gameId'
       description: Deletes a specific game from the library using its unique identifier.
         The operation confirms successful deletion.
       operationId: deleteGame
