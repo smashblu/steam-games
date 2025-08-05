@@ -8,14 +8,6 @@ const dummyGames = [
   }
 ]
 
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
-
-app.post('/', (req, res) => {
-  res.send('Received POST')
-})
-
 app.get('/games', (req, res) => {
   res.send(dummyGames)
 })
