@@ -109,6 +109,12 @@ app.patch('/games/gameId=:gameId', (req, res) => {
 })
 
 app.post('/games/gameId=:gameId', (req, res) => {
+  const gameNum = req.params['gameId']
+  for (game of dummyGames) {
+    if (game['gameId'] === req.body['gameId']) {
+      res.end('Game already exists, no action taken')
+    }
+  }
   res.end('Creation successful')
 })
 
