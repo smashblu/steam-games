@@ -96,6 +96,18 @@ app.get('/games/publisherId=:publisherId', (req, res) => {
   }
 })
 
+app.patch('/games/gameId=:gameId', (req, res) => {
+  res.end('Update successful')
+})
+
+app.post('/games/gameId=:gameId', (req, res) => {
+  res.end('Creation successful')
+})
+
+app.delete('/games/gameId=:gameId', (req, res) => {
+  res.end('Deletion successful')
+})
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
