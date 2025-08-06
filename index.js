@@ -72,6 +72,8 @@ function validateNum(num) {
   return true
 }
 
+app.use(express.json())
+
 app.get('/games', (req, res) => {
   res.send(dummyGames)
 })
@@ -97,6 +99,12 @@ app.get('/games/publisherId=:publisherId', (req, res) => {
 })
 
 app.patch('/games/gameId=:gameId', (req, res) => {
+  const gameObj = dummyGames[req.params['gameId'] - 1]
+  for (const [key, value] of Object.entries(gameObj)) {
+    if (req.body.hasOwnProperty(key)) {
+      gameObj[key] = `${req.body[key]}`
+    }
+  }
   res.end('Update successful')
 })
 
