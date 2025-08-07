@@ -74,7 +74,6 @@ function validateNum(num) {
 
 function existsHelper(objArr, testObj, val) {
   for (item of objArr) {
-    console.log(item, testObj)
     if (item[val] === testObj[val]) {
       return true
     }
@@ -123,6 +122,7 @@ app.post('/games/gameId=:gameId', (req, res) => {
   if (existsHelper(dummyGames, req.body, 'gameId')) {
       res.end('Game already exists, no action taken')
   } else {
+    dummyGames.push(req.body)
     res.end('Creation successful')
   }
 })
@@ -132,5 +132,5 @@ app.delete('/games/gameId=:gameId', (req, res) => {
 })
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
+  console.log(`Steam Games listening on port ${port}`)
 })
