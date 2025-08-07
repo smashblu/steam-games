@@ -108,13 +108,17 @@ app.get('/games/publisherId=:publisherId', (req, res) => {
 })
 
 app.patch('/games/gameId=:gameId', (req, res) => {
-  const gameObj = dummyGames[req.params['gameId'] - 1]
-  for (const [key, value] of Object.entries(gameObj)) {
-    if (req.body.hasOwnProperty(key)) {
-      gameObj[key] = `${req.body[key]}`
+  if (req.body.hasOwnProperty('gameId')) {
+    res.end('Game ID cannot be changed')
+  } else {
+    const gameObj = dummyGames[req.params['gameId'] - 1]
+    for (const [key, value] of Object.entries(gameObj)) {
+      if (req.body.hasOwnProperty(key)) {
+        gameObj[key] = `${req.body[key]}`
+      }
     }
+    res.end('Update successful')
   }
-  res.end('Update successful')
 })
 
 app.post('/games/gameId=:gameId', (req, res) => {
@@ -128,6 +132,8 @@ app.post('/games/gameId=:gameId', (req, res) => {
 })
 
 app.delete('/games/gameId=:gameId', (req, res) => {
+  const targetGame = req.params['gameId'] - 1
+  dummyGames.splice(targetGame, 1)
   res.end('Deletion successful')
 })
 
