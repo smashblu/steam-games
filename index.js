@@ -72,6 +72,16 @@ function validateNum(num) {
   return true
 }
 
+function existsHelper(objArr, testObj, val) {
+  for (item of objArr) {
+    console.log(item, testObj)
+    if (item[val] === testObj[val]) {
+      return true
+    }
+  }
+  return false
+}
+
 app.use(express.json())
 
 app.get('/games', (req, res) => {
@@ -109,13 +119,12 @@ app.patch('/games/gameId=:gameId', (req, res) => {
 })
 
 app.post('/games/gameId=:gameId', (req, res) => {
-  const gameNum = req.params['gameId']
-  for (game of dummyGames) {
-    if (game['gameId'] === req.body['gameId']) {
+  req.body['gameId'] = parseInt(req.params['gameId'])
+  if (existsHelper(dummyGames, req.body, 'gameId')) {
       res.end('Game already exists, no action taken')
-    }
+  } else {
+    res.end('Creation successful')
   }
-  res.end('Creation successful')
 })
 
 app.delete('/games/gameId=:gameId', (req, res) => {
