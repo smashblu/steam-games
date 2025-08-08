@@ -89,7 +89,7 @@ app.get('/games', (req, res) => {
 
 app.post('/games', (req, res) => {
   if (existsHelper(dummyGames, req.body, 'gameId')) {
-      res.end('Game already exists, no action taken')
+      res.end('Game ID already exists, no action taken')
   } else {
     dummyGames.push(req.body)
     res.end('Creation successful')
@@ -138,7 +138,7 @@ app.patch('/games/gameId=:gameId', (req, res) => {
 app.post('/games/gameId=:gameId', (req, res) => {
   req.body['gameId'] = parseInt(req.params['gameId'])
   if (existsHelper(dummyGames, req.body, 'gameId')) {
-      res.end('Game already exists, no action taken')
+      res.end('Game ID already exists, no action taken')
   } else {
     dummyGames.push(req.body)
     res.end('Creation successful')
