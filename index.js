@@ -151,7 +151,6 @@ app.delete('/games/gameId=:gameId', (req, res) => {
       element['gameId'] === gameNum
     )
   dummyGames.splice(targetGame, 1)
-  console.log(dummyGames)
   res.end('Deletion successful')
 })
 
