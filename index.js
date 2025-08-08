@@ -87,6 +87,17 @@ app.get('/games', (req, res) => {
   res.send(dummyGames)
 })
 
+app.post('/games', (req, res) => {
+  if (existsHelper(dummyGames, req.body, 'gameId')) {
+      console.log(dummyGames)
+      res.end('Game already exists, no action taken')
+  } else {
+    dummyGames.push(req.body)
+    console.log(dummyGames)
+    res.end('Creation successful')
+  }
+})
+
 app.get('/games/gameId=:gameId', (req, res) => {
   if (validateNum(req.params['gameId'])) {
     const gameNum = req.params['gameId']
