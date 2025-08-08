@@ -101,7 +101,10 @@ app.post('/games', (req, res) => {
 app.get('/games/gameId=:gameId', (req, res) => {
   if (validateNum(req.params['gameId'])) {
     const gameNum = req.params['gameId']
-    res.send(dummyGames[gameNum - 1])
+    // res.send(dummyGames[gameNum - 1])
+    res.send(dummyGames.find((element) => 
+      element['gameId'] === parseInt(gameNum)
+    ))
   }
 })
 
