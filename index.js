@@ -89,31 +89,28 @@ app.get('/games', (req, res) => {
 
 app.post('/games', (req, res) => {
   if (existsHelper(dummyGames, req.body, 'gameId')) {
-      console.log(dummyGames)
       res.end('Game already exists, no action taken')
   } else {
     dummyGames.push(req.body)
-    console.log(dummyGames)
     res.end('Creation successful')
   }
 })
 
 app.get('/games/gameId=:gameId', (req, res) => {
   if (validateNum(req.params['gameId'])) {
-    const gameNum = req.params['gameId']
-    // res.send(dummyGames[gameNum - 1])
+    const gameNum = parseInt(req.params['gameId'])
     res.send(dummyGames.find((element) => 
-      element['gameId'] === parseInt(gameNum)
+      element['gameId'] === gameNum
     ))
   }
 })
 
 app.get('/games/publisherId=:publisherId', (req, res) => {
   if (validateNum(req.params['publisherId'])) {
-    const pubNum = req.params['publisherId']
+    const pubNum = parseInt(req.params['publisherId'])
     const pubList = []
     for (game of dummyGames) {
-      if (game['publisher']['publisherId'] === parseInt(pubNum)) {
+      if (game['publisher']['publisherId'] === pubNum) {
         pubList.push(game)
       }
     }
@@ -125,7 +122,10 @@ app.patch('/games/gameId=:gameId', (req, res) => {
   if (req.body.hasOwnProperty('gameId')) {
     res.end('Game ID cannot be changed')
   } else {
-    const gameObj = dummyGames[req.params['gameId'] - 1]
+    const gameNum = parseInt(req.params['gameId'])
+    const gameObj = dummyGames.find((element) =>
+      element['gameId'] === gameNum
+    )
     for (const [key, value] of Object.entries(gameObj)) {
       if (req.body.hasOwnProperty(key)) {
         gameObj[key] = `${req.body[key]}`
