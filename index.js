@@ -146,8 +146,12 @@ app.post('/games/gameId=:gameId', (req, res) => {
 })
 
 app.delete('/games/gameId=:gameId', (req, res) => {
-  const targetGame = req.params['gameId'] - 1
+  const gameNum = parseInt(req.params['gameId'])
+  const targetGame = dummyGames.findIndex((element) =>
+      element['gameId'] === gameNum
+    )
   dummyGames.splice(targetGame, 1)
+  console.log(dummyGames)
   res.end('Deletion successful')
 })
 
