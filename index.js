@@ -126,7 +126,7 @@ app.patch('/games/gameId=:gameId', (req, res) => {
     const gameObj = dummyGames.find((element) =>
       element['gameId'] === gameNum
     )
-    for (const [key, value] of Object.entries(gameObj)) {
+    for (const key of Object.keys(gameObj)) {
       if (req.body.hasOwnProperty(key)) {
         gameObj[key] = `${req.body[key]}`
       }
