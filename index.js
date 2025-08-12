@@ -97,9 +97,18 @@ const findProperty = (el, target) => {
 const updateProps = (target, changes) => {
   for (const key of Object.keys(changes)) {
     if (target.hasOwnProperty(key)) {
-    changes[key] = `${target[key]}`
+    changes[key] = target[key]
     }
   }
+}
+
+const matchProp = (obj, prop, curr) => {
+  if (obj.hasOwnProperty(prop)) {
+    if (obj[prop] !== curr) {
+      return true
+    }
+  }
+  return false
 }
 
 app.use(express.json())
@@ -122,7 +131,6 @@ app.get('/games/gameId=:gameId', (req, res) => {
   const gameNum = parseInt(req.params['gameId'])
   if (validateNum(gameNum)) {
     const foundGame = findProperty('gameId', gameNum)
-    console.log(foundGame)
     res.send(foundGame)
   } else {
     res.status(400).end('Game ID is not a number')
@@ -143,19 +151,14 @@ app.get('/games/publisherId=:publisherId', (req, res) => {
 })
 
 app.patch('/games/gameId=:gameId', (req, res) => {
-  if (req.body.hasOwnProperty('gameId')) {
-    res.end('Game ID cannot be changed')
+  const gameNum = parseInt(req.params['gameId'])
+  const newGameData = req.body
+  if (matchProp(newGameData, 'gameId', gameNum)) {
+    res.status(400).end('Game ID cannot be changed')
   } else {
-    const gameNum = parseInt(req.params['gameId'])
-    const gameObj = dummyGames.find((element) =>
-      element['gameId'] === gameNum
-    )
-    for (const key of Object.keys(gameObj)) {
-      if (req.body.hasOwnProperty(key)) {
-        gameObj[key] = `${req.body[key]}`
-      }
-    }
-    res.end('Update successful')
+    const foundGame = findProperty('gameId', gameNum)
+    updateProps(newGameData, foundGame)
+    res.status(201).end('Update successful')
   }
 })
 
