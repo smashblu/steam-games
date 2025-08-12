@@ -2,7 +2,15 @@ const express = require('express')
 const app = express()
 const port = 3000
 
-const gameRatings = ['Rating Pending', 'Rating Pending - Likely Mature 17+', 'Everyone', 'Everyone 10+', 'Teen', 'Mature 17+', 'Adults Only 18+']
+const gameRatings = [
+  'Rating Pending',
+  'Rating Pending - Likely Mature 17+',
+  'Everyone',
+  'Everyone 10+',
+  'Teen',
+  'Mature 17+',
+  'Adults Only 18+',
+]
 const dummyPublishers = [
   {
     publisherId: 1,
@@ -19,7 +27,7 @@ const dummyPublishers = [
   {
     publisherId: 4,
     name: 'Konami'
-  }
+  },
 ]
 
 const dummyGames = [
@@ -62,7 +70,7 @@ const dummyGames = [
     releaseDate: '2004-11-17',
     currentPrice: 69.99,
     publisher: dummyPublishers[3]
-  }
+  },
 ]
 
 function validateNum(num) {
