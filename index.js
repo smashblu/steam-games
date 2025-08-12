@@ -153,7 +153,7 @@ app.get('/games/publisherId=:publisherId', (req, res) => {
     const pubList = makeList(pubNum, 'publisher', 'publisherId')
     res.send(pubList)
   } else {
-    res.status(404).end('Not found')
+    res.status(400).end('Publisher ID is not a number')
   }
 })
 
@@ -166,16 +166,6 @@ app.patch('/games/gameId=:gameId', (req, res) => {
     const foundGame = findProperty('gameId', gameNum)
     updateProps(newGameData, foundGame)
     res.status(201).end('Update successful')
-  }
-})
-
-app.post('/games/gameId=:gameId', (req, res) => {
-  req.body['gameId'] = parseInt(req.params['gameId'])
-  if (existsHelper(dummyGames, req.body, 'gameId')) {
-      res.end('Game ID already exists, no action taken')
-  } else {
-    dummyGames.push(req.body)
-    res.end('Creation successful')
   }
 })
 
