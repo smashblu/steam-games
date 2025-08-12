@@ -111,6 +111,16 @@ const matchProp = (obj, prop, curr) => {
   return false
 }
 
+const makeList = (target, prop, val) => {
+  const list = []
+  for (game of dummyGames) {
+    if (game[prop][val] === target) {
+      list.push(game)
+    }
+  }
+  return list
+}
+
 app.use(express.json())
 
 app.get('/games', (req, res) => {
@@ -138,15 +148,12 @@ app.get('/games/gameId=:gameId', (req, res) => {
 })
 
 app.get('/games/publisherId=:publisherId', (req, res) => {
-  if (validateNum(req.params['publisherId'])) {
-    const pubNum = parseInt(req.params['publisherId'])
-    const pubList = []
-    for (game of dummyGames) {
-      if (game['publisher']['publisherId'] === pubNum) {
-        pubList.push(game)
-      }
-    }
+  const pubNum = parseInt(req.params['publisherId'])
+  if (validateNum(pubNum)) {
+    const pubList = makeList(pubNum, 'publisher', 'publisherId')
     res.send(pubList)
+  } else {
+    res.status(404).end('Not found')
   }
 })
 
