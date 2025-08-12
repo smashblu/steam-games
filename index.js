@@ -73,16 +73,16 @@ const dummyGames = [
   },
 ]
 
-function validateNum(num) {
+const validateNum = num => {
   if (isNaN(num)) {
     return false
   }
   return true
 }
 
-function existsHelper(objArr, testObj, val) {
+const existsHelper = (objArr, target, val) => {
   for (item of objArr) {
-    if (item[val] === testObj[val]) {
+    if (item[val] === target) {
       return true
     }
   }
