@@ -90,7 +90,7 @@ const existsHelper = (objArr, target, val) => {
 }
 
 const findProperty = (el, target) => {
-  dummyGames.find((element) => 
+  return dummyGames.find((element) => 
   element[el] === target
 )}
 
@@ -119,11 +119,13 @@ app.post('/games', (req, res) => {
 })
 
 app.get('/games/gameId=:gameId', (req, res) => {
-  if (validateNum(req.params['gameId'])) {
-    const gameNum = parseInt(req.params['gameId'])
-    res.send(dummyGames.find((element) => 
-      element['gameId'] === gameNum
-    ))
+  const gameNum = parseInt(req.params['gameId'])
+  if (validateNum(gameNum)) {
+    const foundGame = findProperty('gameId', gameNum)
+    console.log(foundGame)
+    res.send(foundGame)
+  } else {
+    res.status(400).end('Game ID is not a number')
   }
 })
 
