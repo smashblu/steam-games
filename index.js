@@ -89,6 +89,19 @@ const existsHelper = (objArr, target, val) => {
   return false
 }
 
+const findProperty = (el, target) => {
+  dummyGames.find((element) => 
+  element[el] === target
+)}
+
+const updateProps = (target, changes) => {
+  for (const key of Object.keys(changes)) {
+    if (target.hasOwnProperty(key)) {
+    changes[key] = `${target[key]}`
+    }
+  }
+}
+
 app.use(express.json())
 
 app.get('/games', (req, res) => {
