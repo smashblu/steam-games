@@ -109,8 +109,9 @@ app.get('/games', (req, res) => {
 })
 
 app.post('/games', (req, res) => {
-  if (existsHelper(dummyGames, req.body, 'gameId')) {
-      res.end('Game ID already exists, no action taken')
+  const gameNum = req.body['gameId']
+  if (existsHelper(dummyGames, gameNum, 'gameId')) {
+      res.status(409).end('Game ID already exists, no action taken')
   } else {
     dummyGames.push(req.body)
     res.end('Creation successful')
