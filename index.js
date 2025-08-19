@@ -94,6 +94,11 @@ const findProperty = (el, target) => {
   element[el] === target
 )}
 
+const findPropertyIndex = (el, target) => {
+  return dummyGames.findIndex((element) => 
+  element[el] === target
+)}
+
 const updateProps = (target, changes) => {
   for (const key of Object.keys(changes)) {
     if (target.hasOwnProperty(key)) {
@@ -133,7 +138,7 @@ app.post('/games', (req, res) => {
       res.status(409).end('Game ID already exists, no action taken')
   } else {
     dummyGames.push(req.body)
-    res.end('Creation successful')
+    res.status(201).end('Creation successful')
   }
 })
 
@@ -171,11 +176,17 @@ app.patch('/games/gameId=:gameId', (req, res) => {
 
 app.delete('/games/gameId=:gameId', (req, res) => {
   const gameNum = parseInt(req.params['gameId'])
-  const targetGame = dummyGames.findIndex((element) =>
-      element['gameId'] === gameNum
-    )
-  dummyGames.splice(targetGame, 1)
-  res.end('Deletion successful')
+  if (validateNum(gameNum)) {
+    if (existsHelper(dummyGames, gameNum, 'gameId')) {
+      const foundGameIndex = findPropertyIndex('gameId', gameNum)
+      dummyGames.splice(foundGameIndex, 1)
+      res.status(204).end('Deletion successful')
+      } else {
+        res.status(404).end('Game ID does not exist')
+      }
+    } else {
+      res.status(400).end('Game ID is not a number')
+    }
 })
 
 app.listen(port, () => {
