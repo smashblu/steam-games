@@ -159,7 +159,7 @@ app.get('/games/gameId=:gameId', (req, res) => {
 app.get('/games/publisherId=:publisherId', (req, res) => {
   const pubNum = parseInt(req.params['publisherId'])
   if (validateNum(pubNum)) {
-    if (existsHelper)(dummyGames, pubNum, 'publisherId') {
+    if (existsHelper(dummyGames, pubNum, 'publisherId')) {
       const pubList = makeList(pubNum, 'publisher', 'publisherId')
       res.send(pubList)
     } else {
@@ -173,12 +173,16 @@ app.get('/games/publisherId=:publisherId', (req, res) => {
 app.patch('/games/gameId=:gameId', (req, res) => {
   const gameNum = parseInt(req.params['gameId'])
   const newGameData = req.body
-  if (matchProp(newGameData, 'gameId', gameNum)) {
-    res.status(400).end('Game ID cannot be changed')
+  if (existsHelper(dummyGames, gameNum, 'gameId')) {
+    if (matchProp(newGameData, 'gameId', gameNum)) {
+      res.status(400).end('Game ID cannot be changed')
+    } else {
+      const foundGame = findProperty('gameId', gameNum)
+      updateProps(newGameData, foundGame)
+      res.status(201).end('Update successful')
+    }
   } else {
-    const foundGame = findProperty('gameId', gameNum)
-    updateProps(newGameData, foundGame)
-    res.status(201).end('Update successful')
+    res.status(404).end('Game ID does not exist')
   }
 })
 
