@@ -145,8 +145,12 @@ app.post('/games', (req, res) => {
 app.get('/games/gameId=:gameId', (req, res) => {
   const gameNum = parseInt(req.params['gameId'])
   if (validateNum(gameNum)) {
-    const foundGame = findProperty('gameId', gameNum)
-    res.send(foundGame)
+    if (existsHelper(dummyGames, gameNum, 'gameId')) {
+      const foundGame = findProperty('gameId', gameNum)
+      res.send(foundGame)
+    } else {
+      res.status(404).end('Game ID does not exist')
+    }
   } else {
     res.status(400).end('Game ID is not a number')
   }
@@ -155,8 +159,12 @@ app.get('/games/gameId=:gameId', (req, res) => {
 app.get('/games/publisherId=:publisherId', (req, res) => {
   const pubNum = parseInt(req.params['publisherId'])
   if (validateNum(pubNum)) {
-    const pubList = makeList(pubNum, 'publisher', 'publisherId')
-    res.send(pubList)
+    if (existsHelper)(dummyGames, pubNum, 'publisherId') {
+      const pubList = makeList(pubNum, 'publisher', 'publisherId')
+      res.send(pubList)
+    } else {
+      res.status(404).end('Publisher ID does not exist')
+    }
   } else {
     res.status(400).end('Publisher ID is not a number')
   }
