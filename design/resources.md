@@ -5,3 +5,5 @@
 - [Bookstore Sample Database](https://www.databasestar.com/sample-bookstore-database/)
 - [API Editor and Viewer](https://editor.swagger.io/)
 - [UI for creating APIs](https://www.api-fiddle.com/)
+- [Postman API platform](https://www.postman.com/)
+- [Express JS documentation](https://expressjs.com/)
