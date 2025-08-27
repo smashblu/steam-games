@@ -105,6 +105,7 @@ const updateProps = (target, changes) => {
     changes[key] = target[key]
     }
   }
+  return
 }
 
 const matchProp = (obj, prop, curr) => {
@@ -130,16 +131,18 @@ app.use(express.json())
 
 app.get('/games', (req, res) => {
   res.send(dummyGames)
+  return
 })
 
 app.post('/games', (req, res) => {
   const gameNum = req.body['gameId']
   if (existsHelper(dummyGames, gameNum, 'gameId')) {
-      res.status(409).end('Game ID already exists, no action taken')
-  } else {
-    dummyGames.push(req.body)
-    res.status(201).end('Creation successful')
+    res.status(409).end('Game ID already exists, no action taken')
+    return
   }
+  dummyGames.push(req.body)
+  res.status(201).end('Creation successful')
+  return
 })
 
 app.get('/games/gameId=:gameId', (req, res) => {
@@ -148,12 +151,13 @@ app.get('/games/gameId=:gameId', (req, res) => {
     if (existsHelper(dummyGames, gameNum, 'gameId')) {
       const foundGame = findProperty('gameId', gameNum)
       res.send(foundGame)
-    } else {
-      res.status(404).end('Game ID does not exist')
+      return
     }
-  } else {
-    res.status(400).end('Game ID is not a number')
+    res.status(404).end('Game ID does not exist')
+    return
   }
+  res.status(400).end('Game ID is not a number')
+  return
 })
 
 app.get('/games/publisherId=:publisherId', (req, res) => {
@@ -162,12 +166,13 @@ app.get('/games/publisherId=:publisherId', (req, res) => {
     if (existsHelper(dummyGames, pubNum, 'publisherId')) {
       const pubList = makeList(pubNum, 'publisher', 'publisherId')
       res.send(pubList)
-    } else {
-      res.status(404).end('Publisher ID does not exist')
+      return
     }
-  } else {
-    res.status(400).end('Publisher ID is not a number')
+    res.status(404).end('Publisher ID does not exist')
+    return
   }
+  res.status(400).end('Publisher ID is not a number')
+  return
 })
 
 app.patch('/games/gameId=:gameId', (req, res) => {
@@ -176,14 +181,15 @@ app.patch('/games/gameId=:gameId', (req, res) => {
   if (existsHelper(dummyGames, gameNum, 'gameId')) {
     if (matchProp(newGameData, 'gameId', gameNum)) {
       res.status(400).end('Game ID cannot be changed')
-    } else {
-      const foundGame = findProperty('gameId', gameNum)
-      updateProps(newGameData, foundGame)
-      res.status(201).end('Update successful')
+      return
     }
-  } else {
-    res.status(404).end('Game ID does not exist')
+    const foundGame = findProperty('gameId', gameNum)
+    updateProps(newGameData, foundGame)
+    res.status(201).end('Update successful')
+    return
   }
+  res.status(404).end('Game ID does not exist')
+  return
 })
 
 app.delete('/games/gameId=:gameId', (req, res) => {
@@ -193,14 +199,16 @@ app.delete('/games/gameId=:gameId', (req, res) => {
       const foundGameIndex = findPropertyIndex('gameId', gameNum)
       dummyGames.splice(foundGameIndex, 1)
       res.status(204).end('Deletion successful')
-      } else {
-        res.status(404).end('Game ID does not exist')
-      }
-    } else {
-      res.status(400).end('Game ID is not a number')
+      return
     }
+    res.status(404).end('Game ID does not exist')
+    return
+  }
+  res.status(400).end('Game ID is not a number')
+  return
 })
 
 app.listen(port, () => {
   console.log(`Steam Games listening on port ${port}`)
+  return
 })
