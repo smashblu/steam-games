@@ -1,6 +1,7 @@
 const express = require('express')
 const app = express()
 const port = 3000
+const { validateNum } = require('./service.js')
 
 const gameRatings = [
   'Rating Pending',
@@ -73,12 +74,12 @@ const dummyGames = [
   },
 ]
 
-const validateNum = num => {
+/* const validateNum = num => {
   if (isNaN(num)) {
     return false
   }
   return true
-}
+} */
 
 const existsHelper = (objArr, target, val) => {
   for (item of objArr) {
