@@ -13,7 +13,7 @@ app.get('/games', (req, res) => {
 
 app.post('/games', (req, res) => {
   const gameNum = req.body['gameId']
-  if (existsHelper(dummyGames, gameNum, 'gameId')) {
+  if (existsHelper(gameNum, 'gameId')) {
     res.status(409).end('Game ID already exists, no action taken')
     return
   }
@@ -25,7 +25,7 @@ app.post('/games', (req, res) => {
 app.get('/games/gameId=:gameId', (req, res) => {
   const gameNum = parseInt(req.params['gameId'])
   if (validateNum(gameNum)) {
-    if (existsHelper(dummyGames, gameNum, 'gameId')) {
+    if (existsHelper(gameNum, 'gameId')) {
       const foundGame = findProperty('gameId', gameNum)
       res.send(foundGame)
       return
@@ -40,7 +40,7 @@ app.get('/games/gameId=:gameId', (req, res) => {
 app.get('/games/publisherId=:publisherId', (req, res) => {
   const pubNum = parseInt(req.params['publisherId'])
   if (validateNum(pubNum)) {
-    if (existsHelper(dummyGames, pubNum, 'publisherId')) {
+    if (existsHelper(pubNum, 'publisherId')) {
       const pubList = makeList(pubNum, 'publisher', 'publisherId')
       res.send(pubList)
       return
@@ -55,7 +55,7 @@ app.get('/games/publisherId=:publisherId', (req, res) => {
 app.patch('/games/gameId=:gameId', (req, res) => {
   const gameNum = parseInt(req.params['gameId'])
   const newGameData = req.body
-  if (existsHelper(dummyGames, gameNum, 'gameId')) {
+  if (existsHelper(gameNum, 'gameId')) {
     if (matchProp(newGameData, 'gameId', gameNum)) {
       res.status(400).end('Game ID cannot be changed')
       return
@@ -72,7 +72,7 @@ app.patch('/games/gameId=:gameId', (req, res) => {
 app.delete('/games/gameId=:gameId', (req, res) => {
   const gameNum = parseInt(req.params['gameId'])
   if (validateNum(gameNum)) {
-    if (existsHelper(dummyGames, gameNum, 'gameId')) {
+    if (existsHelper(gameNum, 'gameId')) {
       const foundGameIndex = findPropertyIndex('gameId', gameNum)
       dummyGames.splice(foundGameIndex, 1)
       res.status(204).end('Deletion successful')

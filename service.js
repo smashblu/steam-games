@@ -7,8 +7,8 @@ const validateNum = num => {
   return true
 }
 
-const existsHelper = (objArr, target, val) => {
-  for (item of objArr) {
+const existsHelper = (target, val) => {
+  for (item of dummyGames) {
     if (item[val] === target) {
       return true
     }
