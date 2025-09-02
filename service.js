@@ -57,5 +57,8 @@ const makeList = (target, prop, val) => {
 const getGameList = () => {
   return dummyGames
 }
+const addGameList = (obj) => {
+  dummyGames.push(obj)
+}
 
-module.exports = { validateNum, existsHelper, findProperty, findPropertyIndex, updateProps, matchProp, makeList, getGameList }
+module.exports = { validateNum, existsHelper, findProperty, findPropertyIndex, updateProps, matchProp, makeList, getGameList, addGameList}

@@ -1,24 +1,25 @@
 const express = require('express')
 const app = express()
 const port = 3000
-const { validateNum, existsHelper, findProperty, findPropertyIndex, updateProps, matchProp, makeList, getGameList } = require('./service.js')
+const { validateNum, existsHelper, findProperty, findPropertyIndex, updateProps, matchProp, makeList, getGameList, addGameList } = require('./service.js')
 const { dummyGames } = require('./database.js')
 
 app.use(express.json())
 
 app.get('/games', (req, res) => {
-  // res.send(dummyGames)
   res.send(getGameList())
   return
 })
 
 app.post('/games', (req, res) => {
+  const game = req.body
   const gameNum = req.body['gameId']
   if (existsHelper(gameNum, 'gameId')) {
     res.status(409).end('Game ID already exists, no action taken')
     return
   }
-  dummyGames.push(req.body)
+  //dummyGames.push(req.body)
+  addGameList(game)
   res.status(201).end('Creation successful')
   return
 })
