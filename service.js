@@ -59,6 +59,12 @@ const getGameList = () => {
 }
 const addGameList = (obj) => {
   dummyGames.push(obj)
+  return
 }
 
-module.exports = { validateNum, existsHelper, findProperty, findPropertyIndex, updateProps, matchProp, makeList, getGameList, addGameList}
+const delGameList = (index) => {
+  dummyGames.splice(index, 1)
+  return
+}
+
+module.exports = { validateNum, existsHelper, findProperty, findPropertyIndex, updateProps, matchProp, makeList, getGameList, addGameList, delGameList }
