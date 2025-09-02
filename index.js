@@ -1,13 +1,14 @@
 const express = require('express')
 const app = express()
 const port = 3000
-const { validateNum, existsHelper, findProperty, findPropertyIndex, updateProps, matchProp, makeList } = require('./service.js')
+const { validateNum, existsHelper, findProperty, findPropertyIndex, updateProps, matchProp, makeList, getGameList } = require('./service.js')
 const { dummyGames } = require('./database.js')
 
 app.use(express.json())
 
 app.get('/games', (req, res) => {
-  res.send(dummyGames)
+  // res.send(dummyGames)
+  res.send(getGameList())
   return
 })
 

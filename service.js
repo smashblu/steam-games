@@ -54,4 +54,8 @@ const makeList = (target, prop, val) => {
   return list
 }
 
-module.exports = { validateNum, existsHelper, findProperty, findPropertyIndex, updateProps, matchProp, makeList }
+const getGameList = () => {
+  return dummyGames
+}
+
+module.exports = { validateNum, existsHelper, findProperty, findPropertyIndex, updateProps, matchProp, makeList, getGameList }
