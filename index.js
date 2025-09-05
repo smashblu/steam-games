@@ -1,12 +1,13 @@
 const express = require('express')
 const app = express()
 const port = 3000
-const { validateNum, existsHelper, findProperty, findPropertyIndex, updateProps, matchProp, makeList, getGameList, addGameList, delGameList } = require('./service.js')
+const { validateNum, existsHelper, findProperty, findPropertyIndex, updateProps, matchProp, makeList } = require('./service.js')
+const { listGames, addGame, delGame } = require('./database.js')
 
 app.use(express.json())
 
 app.get('/games', (req, res) => {
-  res.send(getGameList())
+  res.send(listGames())
   return
 })
 
@@ -17,7 +18,7 @@ app.post('/games', (req, res) => {
     res.status(409).end('Game ID already exists, no action taken')
     return
   }
-  addGameList(game)
+  addGame(game)
   res.status(201).end('Creation successful')
   return
 })
@@ -74,7 +75,7 @@ app.delete('/games/gameId=:gameId', (req, res) => {
   if (validateNum(gameNum)) {
     if (existsHelper(gameNum, 'gameId')) {
       const foundGameIndex = findPropertyIndex('gameId', gameNum)
-      delGameList(foundGameIndex)
+      delGame(foundGameIndex)
       res.status(204).end('Deletion successful')
       return
     }

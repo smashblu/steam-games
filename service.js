@@ -1,4 +1,4 @@
-const { dummyGames } = require('./database.js')
+const { listGames } = require('./database.js')
 
 const validateNum = num => {
   if (isNaN(num)) {
@@ -8,7 +8,7 @@ const validateNum = num => {
 }
 
 const existsHelper = (target, val) => {
-  for (item of dummyGames) {
+  for (item of listGames()) {
     if (item[val] === target) {
       return true
     }
@@ -17,12 +17,12 @@ const existsHelper = (target, val) => {
 }
 
 const findProperty = (el, target) => {
-  return dummyGames.find((element) => 
+  return listGames().find((element) => 
   element[el] === target
 )}
 
 const findPropertyIndex = (el, target) => {
-  return dummyGames.findIndex((element) => 
+  return listGames().findIndex((element) => 
   element[el] === target
 )}
 
@@ -46,7 +46,7 @@ const matchProp = (obj, prop, curr) => {
 
 const makeList = (target, prop, val) => {
   const list = []
-  for (game of dummyGames) {
+  for (game of listGames()) {
     if (game[prop][val] === target) {
       list.push(game)
     }
@@ -54,17 +54,4 @@ const makeList = (target, prop, val) => {
   return list
 }
 
-const getGameList = () => {
-  return dummyGames
-}
-const addGameList = (obj) => {
-  dummyGames.push(obj)
-  return
-}
-
-const delGameList = (index) => {
-  dummyGames.splice(index, 1)
-  return
-}
-
-module.exports = { validateNum, existsHelper, findProperty, findPropertyIndex, updateProps, matchProp, makeList, getGameList, addGameList, delGameList }
+module.exports = { validateNum, existsHelper, findProperty, findPropertyIndex, updateProps, matchProp, makeList }

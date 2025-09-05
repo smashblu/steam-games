@@ -69,4 +69,17 @@ const dummyGames = [
   },
 ]
 
-module.exports = { dummyGames, dummyPublishers, gameRatings }
+const listGames = () => {
+  return dummyGames
+}
+const addGame = (obj) => {
+  dummyGames.push(obj)
+  return
+}
+
+const delGame = (index) => {
+  dummyGames.splice(index, 1)
+  return
+}
+
+module.exports = { listGames, addGame, delGame }
