@@ -41,7 +41,7 @@ app.get('/games/gameId=:gameId', (req, res) => {
 app.get('/games/publisherId=:publisherId', (req, res) => {
   const pubNum = parseInt(req.params['publisherId'])
   if (validateNum(pubNum)) {
-    if (existsHelper(pubNum, 'publisherId')) {
+    if (existsHelper(pubNum, 'publisher', 'publisherId')) {
       const pubList = makeList(pubNum, 'publisher', 'publisherId')
       res.send(pubList)
       return

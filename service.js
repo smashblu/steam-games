@@ -7,13 +7,21 @@ const validateNum = num => {
   return true
 }
 
-const existsHelper = (target, val) => {
-  for (const item of listGames()) {
-    if (item[val] === target) {
-      return true
+const existsHelper = (target, val, nestedVal) => {
+  if (nestedVal) {
+    for (const item of listGames()) {
+      if (item[val][nestedVal] === target) {
+        return true
+      }
     }
+    return false
   }
-  return false
+for (const item of listGames()) {
+  if (item[val] === target) {
+    return true
+  }
+}
+return false
 }
 
 const findProperty = (el, target) => {
