@@ -8,7 +8,7 @@ const validateNum = num => {
 }
 
 const existsHelper = (target, val) => {
-  for (item of listGames()) {
+  for (const item of listGames()) {
     if (item[val] === target) {
       return true
     }
