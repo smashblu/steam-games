@@ -1,5 +1,5 @@
 const request = require('supertest')
-const app = require('../steam-games')
+// const app = require('../steam-games')
 
 describe('Sample Test', () => {
   it('should test that true === true', () => {
