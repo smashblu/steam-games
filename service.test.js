@@ -1,5 +1,5 @@
 const { listGames } = require("./database")
-const { validateNum, existsHelper, findProperty } = require("./service")
+const { validateNum, existsHelper, findProperty, findPropertyIndex } = require("./service")
 
 jest.mock('./database', () => ({
   listGames: jest.fn()
@@ -47,5 +47,20 @@ describe('Test findProperty', () => {
   })
   it('Test returns undefined object', () => {
     expect(findProperty('gameId', 200000)).toBe(undefined)
+  })
+  it('Test returns undefined object', () => {
+    expect(findProperty('someId', 1)).toBe(undefined)
+  })
+})
+
+describe('Test findPropertyIndex', () => {
+  it('Test returns target object index', () => {
+    expect(findPropertyIndex('gameId', 1)).toBe(0)
+  })
+  it('Test returns target negative index', () => {
+    expect(findPropertyIndex('gameId', 200000)).toBe(-1)
+  })
+  it('Test returns target negative index', () => {
+    expect(findPropertyIndex('someId', 1)).toBe(-1)
   })
 })
