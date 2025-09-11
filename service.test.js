@@ -1,4 +1,20 @@
+const { listGames } = require("./database")
 const { validateNum, existsHelper } = require("./service")
+
+jest.mock('./database', () => ({
+  listGames: jest.fn()
+}))
+
+listGames.mockReturnValue([
+  {
+    gameId: 1,
+    title: 'Some Game',
+    publisher: {
+      publisherId: 1,
+      name: 'Some Publisher'
+    }
+  }
+])
 
 describe('Test validateNum', () => {
   it('Test that a number returns true', () => {
