@@ -5,7 +5,7 @@ jest.mock('./database', () => ({
   listGames: jest.fn()
 }))
 
-listGames.mockReturnValue([
+const testGameList = [
   {
     gameId: 1,
     title: 'Some Game',
@@ -14,7 +14,8 @@ listGames.mockReturnValue([
       name: 'Some Publisher'
     }
   }
-])
+]
+listGames.mockReturnValue(testGameList)
 
 describe('Test validateNum', () => {
   it('Test that a number returns true', () => {
