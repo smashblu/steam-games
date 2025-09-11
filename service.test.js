@@ -1,5 +1,5 @@
 const { listGames } = require("./database")
-const { validateNum, existsHelper } = require("./service")
+const { validateNum, existsHelper, findProperty } = require("./service")
 
 jest.mock('./database', () => ({
   listGames: jest.fn()
@@ -38,5 +38,14 @@ describe('Test existsHelper', () => {
   })
   it('Test object returns false', () => {
     expect(existsHelper('Blonic the Bledgeblog 30', 'title')).toBe(false)
+  })
+})
+
+describe('Test findProperty', () => {
+  it('Test returns target object', () => {
+    expect(findProperty('gameId', 1)).toBe(testGameList[0])
+  })
+  it('Test returns undefined object', () => {
+    expect(findProperty('gameId', 200000)).toBe(undefined)
   })
 })
