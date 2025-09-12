@@ -1,5 +1,5 @@
 const { listGames } = require("./database")
-const { validateNum, existsHelper, findProperty, findPropertyIndex } = require("./service")
+const { validateNum, existsHelper, findProperty, findPropertyIndex, updateProps } = require("./service")
 
 jest.mock('./database', () => ({
   listGames: jest.fn()
@@ -62,5 +62,18 @@ describe('Test findPropertyIndex', () => {
   })
   it('Should return target negative index', () => {
     expect(findPropertyIndex('someId', 1)).toBe(-1)
+  })
+})
+
+describe('Test updateProps', () => {
+  it('Should change specific object properties', () => {
+    const testObj = {gameId: 2}
+    updateProps(testObj, testGameList[0])
+    expect(testGameList[0]['gameId']).toBe(2)
+  })
+  it('Should fail to change object properties', () => {
+    const testObj = {someId: 2}
+    updateProps(testObj, testGameList[0])
+    expect(testGameList[0]['someId']).toBe(undefined)
   })
 })
