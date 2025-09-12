@@ -76,7 +76,6 @@ const addGame = (obj) => {
   dummyGames.push(obj)
   return
 }
-
 const delGame = (index) => {
   dummyGames.splice(index, 1)
   return
