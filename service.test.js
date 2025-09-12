@@ -18,49 +18,49 @@ const testGameList = [
 listGames.mockReturnValue(testGameList)
 
 describe('Test validateNum', () => {
-  it('Test that a number returns true', () => {
+  it('Number should return true', () => {
     expect(validateNum(1)).toBe(true)
   })
-  it('Test that a string returns false', () => {
+  it('String should returns false', () => {
     expect(validateNum('test string')).toBe(false)
   })
 })
 
 describe('Test existsHelper', () => {
-  it('Test nested object returns true', () => {
+  it('Nested object should return true', () => {
     expect(existsHelper(1, 'publisher', 'publisherId')).toBe(true)
   })
-  it('Test nested object returns false', () => {
+  it('Nested object should return false', () => {
     expect(existsHelper(500000, 'publisher', 'publisherId')).toBe(false)
   })
-  it('Test object returns true', () => {
+  it('Object should return true', () => {
     expect(existsHelper(1, 'gameId')).toBe(true)
   })
-  it('Test object returns false', () => {
+  it('Object should return false', () => {
     expect(existsHelper('Blonic the Bledgeblog 30', 'title')).toBe(false)
   })
 })
 
 describe('Test findProperty', () => {
-  it('Test returns target object', () => {
+  it('Should return target object', () => {
     expect(findProperty('gameId', 1)).toBe(testGameList[0])
   })
-  it('Test returns undefined object', () => {
+  it('Should return target undefined object', () => {
     expect(findProperty('gameId', 200000)).toBe(undefined)
   })
-  it('Test returns undefined object', () => {
+  it('Should return target undefined object', () => {
     expect(findProperty('someId', 1)).toBe(undefined)
   })
 })
 
 describe('Test findPropertyIndex', () => {
-  it('Test returns target object index', () => {
+  it('Should return target object index', () => {
     expect(findPropertyIndex('gameId', 1)).toBe(0)
   })
-  it('Test returns target negative index', () => {
+  it('Should return target negative index', () => {
     expect(findPropertyIndex('gameId', 200000)).toBe(-1)
   })
-  it('Test returns target negative index', () => {
+  it('Should return target negative index', () => {
     expect(findPropertyIndex('someId', 1)).toBe(-1)
   })
 })
