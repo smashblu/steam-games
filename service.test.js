@@ -1,5 +1,5 @@
 const { listGames } = require("./database")
-const { validateNum, existsHelper, findProperty, findPropertyIndex, updateProps, matchProp } = require("./service")
+const { validateNum, existsHelper, findProperty, findPropertyIndex, updateProps, matchProp, makeList } = require("./service")
 
 jest.mock('./database', () => ({
   listGames: jest.fn()
@@ -90,5 +90,14 @@ describe('Test matchProp', () => {
   it('Should match property but not value and return false', () => {
     const testObj = {gameId: 2}
     expect(matchProp(testGameList[0], 'gameId', testObj['gameId'])).toBe(false)
+  })
+})
+
+describe('Test makeList', () => {
+  it('Should return list from listGames()', () => {
+    expect(makeList(1, 'publisher', 'publisherId')).toStrictEqual(testGameList)
+  })
+  it('Should return empty list', () => {
+    expect(makeList(2, 'publisher', 'publisherId')).toStrictEqual([])
   })
 })
