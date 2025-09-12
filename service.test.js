@@ -1,5 +1,5 @@
 const { listGames } = require("./database")
-const { validateNum, existsHelper, findProperty, findPropertyIndex, updateProps } = require("./service")
+const { validateNum, existsHelper, findProperty, findPropertyIndex, updateProps, matchProp } = require("./service")
 
 jest.mock('./database', () => ({
   listGames: jest.fn()
@@ -75,5 +75,20 @@ describe('Test updateProps', () => {
     const testObj = {someId: 2}
     updateProps(testObj, testGameList[0])
     expect(testGameList[0]['someId']).toBe(undefined)
+  })
+})
+
+describe('Test matchProp', () => {
+  it('Should match property/value and return true', () => {
+    const testObj = {gameId: 1}
+    expect(matchProp(testGameList[0], 'gameId', testObj['gameId'])).toBe(true)
+  })
+  it('Should not match property and return false', () => {
+    const testObj = {someId: 1}
+    expect(matchProp(testGameList[0], 'someId', testObj['someId'])).toBe(false)
+  })
+  it('Should match property but not value and return false', () => {
+    const testObj = {gameId: 2}
+    expect(matchProp(testGameList[0], 'gameId', testObj['gameId'])).toBe(false)
   })
 })
