@@ -7,7 +7,7 @@ const { listGames, addGame, delGame } = require('./database.js')
 app.use(express.json())
 
 app.get('/games', (req, res) => {
-  res.send(listGames())
+  res.status(200).send(listGames())
   return
 })
 

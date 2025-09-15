@@ -1,9 +1,11 @@
 const request = require('supertest')
-// const app = require('../steam-games')
+const express = require('express')
+const app = express()
 
-describe('Sample Test', () => {
-  it('should test that true === true', () => {
-    expect(true).toBe(true)
-  })
-})
-
+describe('Test the Games path', () => {
+  test('Should respond 200 to GET request', () => {
+    return request(app)
+      .get('/games')
+      .expect(200);
+  });
+});
