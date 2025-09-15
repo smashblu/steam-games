@@ -1,6 +1,5 @@
 const request = require('supertest')
-const express = require('express')
-const app = express()
+const app = require('./index')
 
 describe('Test the Games path', () => {
   test('Should respond 200 to GET request', () => {

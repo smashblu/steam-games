@@ -90,3 +90,5 @@ app.listen(port, () => {
   console.log(`Steam Games listening on port ${port}`)
   return
 })
+
+module.exports = app
