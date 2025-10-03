@@ -28,7 +28,7 @@ app.get('/games/gameId=:gameId', (req, res) => {
   if (validateNum(gameNum)) {
     if (existsHelper(gameNum, 'gameId')) {
       const foundGame = findProperty('gameId', gameNum)
-      res.send(foundGame)
+      res.status(200).send(foundGame)
       return
     }
     res.status(404).end('Game ID does not exist')
@@ -86,9 +86,9 @@ app.delete('/games/gameId=:gameId', (req, res) => {
   return
 })
 
-app.listen(port, () => {
+const server = app.listen(port, () => {
   console.log(`Steam Games listening on port ${port}`)
   return
 })
 
-module.exports = app
+module.exports = { app, server }

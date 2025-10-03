@@ -1,15 +1,20 @@
 const request = require('supertest')
-const app = require('./index')
-const { listGames } = require("./database")
+const { app, server} = require('./index')
+const { listGames, addGame } = require("./database")
 const { existsHelper } = require('./service')
 
 jest.mock('./database', () => ({
-  listGames: jest.fn()
+  listGames: jest.fn(),
+  addGame: jest.fn()
 }))
 
 jest.mock('./service', () => ({
   existsHelper: jest.fn(),
 }))
+
+afterAll(() => {
+  server.close()
+})
 
 const testGameList = [
   {
