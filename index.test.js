@@ -28,14 +28,16 @@ const testGameList = [
 ]
 listGames.mockReturnValue(testGameList)
 
-describe('Test the Games path', () => {
+describe('Test GET operation for /games path', () => {
   test('Should respond 200 to GET request', () => {
     return request(app)
       .get('/games')
       .expect(200)
       .expect(testGameList)
   });
+});
 
+describe('Test POST operation for /games path', () => {
   test('Should respond 201 to POST request with new game', () => {
     const newGame = {
       gameId: 2,
