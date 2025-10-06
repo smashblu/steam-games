@@ -34,8 +34,8 @@ describe('Test GET operation for /games path', () => {
       .get('/games')
       .expect(200)
       .expect(testGameList)
-  });
-});
+  })
+})
 
 describe('Test POST operation for /games path', () => {
   test('Should respond 201 to POST request with new game', () => {
@@ -54,5 +54,5 @@ describe('Test POST operation for /games path', () => {
       .then(() => {
         expect(addGame).toHaveBeenCalledWith(newGame)
       })
-  });
-});
+  })
+})
