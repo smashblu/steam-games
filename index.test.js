@@ -1,7 +1,7 @@
 const request = require('supertest')
 const { app, server} = require('./index')
 const { listGames, addGame } = require("./database")
-const { existsHelper } = require('./service')
+const { existsHelper, validateNum, findProperty } = require('./service')
 
 jest.mock('./database', () => ({
   listGames: jest.fn(),
@@ -10,6 +10,8 @@ jest.mock('./database', () => ({
 
 jest.mock('./service', () => ({
   existsHelper: jest.fn(),
+  validateNum: jest.fn(),
+  findProperty: jest.fn(),
 }))
 
 afterAll(() => {
@@ -54,5 +56,19 @@ describe('Test POST operation for /games path', () => {
       .then(() => {
         expect(addGame).toHaveBeenCalledWith(newGame)
       })
+  })
+})
+
+describe('Test GET operation for /games/gameId path', () => {
+  test('Should respond 200 to GET request', () => {
+
+    validateNum.mockReturnValue(true)
+    existsHelper.mockReturnValue(true)
+    findProperty.mockReturnValue(testGameList[0])
+
+    return request(app)
+      .get('/games/gameId=:gameId')
+      .expect(200)
+      .expect(testGameList[0])
   })
 })
