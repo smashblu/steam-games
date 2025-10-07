@@ -57,6 +57,16 @@ describe('Test POST operation for /games path', () => {
         expect(addGame).toHaveBeenCalledWith(newGame)
       })
   })
+  it('Should respond 409 to POST request stating game already exists', () => {
+
+    existsHelper.mockReturnValue(true)
+
+    return request(app)
+      .post('/games')
+      .send(testGameList[0])
+      .expect('Game ID already exists, no action taken')
+      .expect(409)
+  })
 })
 
 describe('Test GET operation for /games/gameId path', () => {
