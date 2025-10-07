@@ -81,4 +81,14 @@ describe('Test GET operation for /games/gameId path', () => {
       .expect(200)
       .expect(testGameList[0])
   })
+  it('Should respond 200 to GET request', () => {
+
+    validateNum.mockReturnValue(true)
+    existsHelper.mockReturnValue(false)
+    
+    return request(app)
+      .get('/games/gameId=:gameId')
+      .expect(404)
+      .expect('Game ID does not exist')
+  })
 })

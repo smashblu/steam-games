@@ -10,7 +10,7 @@
         - [x] Test already existing entry
     - GET on /games/gameId
         - [x] Test successful request
-        - [ ] Test if entry does not exist
+        - [x] Test if entry does not exist
         - [ ] Test request not a number
     - GET on /games/publisherId
         - [ ] Test successful request
