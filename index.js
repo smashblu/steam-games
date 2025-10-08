@@ -43,7 +43,7 @@ app.get('/games/publisherId=:publisherId', (req, res) => {
   if (validateNum(pubNum)) {
     if (existsHelper(pubNum, 'publisher', 'publisherId')) {
       const pubList = makeList(pubNum, 'publisher', 'publisherId')
-      res.send(pubList)
+      res.status(200).send(pubList)
       return
     }
     res.status(404).end('Publisher ID does not exist')
