@@ -1,7 +1,7 @@
 const request = require('supertest')
 const { app, server} = require('./index')
 const { listGames, addGame } = require("./database")
-const { existsHelper, validateNum, findProperty, makeList } = require('./service')
+const { existsHelper, validateNum, findProperty, makeList, matchProp } = require('./service')
 
 jest.mock('./database', () => ({
   listGames: jest.fn(),
@@ -13,6 +13,7 @@ jest.mock('./service', () => ({
   validateNum: jest.fn(),
   findProperty: jest.fn(),
   makeList: jest.fn(),
+  matchProp: jest.fn(),
 }))
 
 afterAll(() => {
@@ -115,5 +116,30 @@ describe('Test GET operation for /games/publisherId path', () => {
       .get('/games/publisherId=:publisherId')
       .expect(404)
       .expect('Publisher ID does not exist')
+  })
+})
+
+describe('Test PATCH operation for /games/gameId path', () => {
+  /* it('Should respond 201 to GET request', () => {
+
+    validateNum.mockReturnValue(true)
+    existsHelper.mockReturnValue(true)
+    matchProp.mockReturnValue(false)
+
+    return request(app)
+      .patch('/games/gameId=:gameId')
+      .expect(201)
+      .expect()
+  }) */
+  it('Should respond 400 to GET request', () => {
+
+    validateNum.mockReturnValue(true)
+    existsHelper.mockReturnValue(true)
+    matchProp.mockReturnValue(true)
+    
+    return request(app)
+      .patch('/games/gameId=:gameId')
+      .expect(400)
+      .expect('Game ID cannot be changed')
   })
 })
