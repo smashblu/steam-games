@@ -13,8 +13,8 @@
         - [x] Test if entry does not exist
         - [ ] Test request not a number
     - GET on /games/publisherId
-        - [ ] Test successful request
-        - [ ] Test if entry does not exist
+        - [x] Test successful request
+        - [x] Test if entry does not exist
         - [ ] Test request not a number
     - PATCH on /games/gameId
         - [ ] Test successful request

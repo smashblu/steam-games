@@ -1,7 +1,7 @@
 const request = require('supertest')
 const { app, server} = require('./index')
 const { listGames, addGame } = require("./database")
-const { existsHelper, validateNum, findProperty } = require('./service')
+const { existsHelper, validateNum, findProperty, makeList } = require('./service')
 
 jest.mock('./database', () => ({
   listGames: jest.fn(),
@@ -12,6 +12,7 @@ jest.mock('./service', () => ({
   existsHelper: jest.fn(),
   validateNum: jest.fn(),
   findProperty: jest.fn(),
+  makeList: jest.fn(),
 }))
 
 afterAll(() => {
@@ -81,7 +82,7 @@ describe('Test GET operation for /games/gameId path', () => {
       .expect(200)
       .expect(testGameList[0])
   })
-  it('Should respond 200 to GET request', () => {
+  it('Should respond 404 to GET request', () => {
 
     validateNum.mockReturnValue(true)
     existsHelper.mockReturnValue(false)
@@ -90,5 +91,29 @@ describe('Test GET operation for /games/gameId path', () => {
       .get('/games/gameId=:gameId')
       .expect(404)
       .expect('Game ID does not exist')
+  })
+})
+
+describe('Test GET operation for /games/publisherId path', () => {
+  it('Should respond 200 to GET request', () => {
+
+    validateNum.mockReturnValue(true)
+    existsHelper.mockReturnValue(true)
+    makeList.mockReturnValue(testGameList)
+    
+    return request(app)
+      .get('/games/publisherId=:publisherId')
+      .expect(200)
+      .expect(testGameList)
+  })
+  it('Should respond 404 to GET request', () => {
+
+    validateNum.mockReturnValue(true)
+    existsHelper.mockReturnValue(false)
+    
+    return request(app)
+      .get('/games/publisherId=:publisherId')
+      .expect(404)
+      .expect('Publisher ID does not exist')
   })
 })
