@@ -56,17 +56,21 @@ app.get('/games/publisherId=:publisherId', (req, res) => {
 app.patch('/games/gameId=:gameId', (req, res) => {
   const gameNum = parseInt(req.params['gameId'])
   const newGameData = req.body
-  if (existsHelper(gameNum, 'gameId')) {
-    if (matchProp(newGameData, 'gameId', gameNum)) {
-      res.status(400).end('Game ID cannot be changed')
+  if (validateNum(gameNum)) {
+    if (existsHelper(gameNum, 'gameId')) {
+      if (matchProp(newGameData, 'gameId', gameNum)) {
+        res.status(400).end('Game ID cannot be changed')
+        return
+      }
+      const foundGame = findProperty('gameId', gameNum)
+      updateProps(newGameData, foundGame)
+      res.status(201).end('Update successful')
       return
     }
-    const foundGame = findProperty('gameId', gameNum)
-    updateProps(newGameData, foundGame)
-    res.status(201).end('Update successful')
+    res.status(404).end('Game ID does not exist')
     return
   }
-  res.status(404).end('Game ID does not exist')
+  res.status(400).end('Game ID is not a number')
   return
 })
 
