@@ -120,7 +120,7 @@ describe('Test GET operation for /games/publisherId path', () => {
 })
 
 describe('Test PATCH operation for /games/gameId path', () => {
-  /* it('Should respond 201 to GET request', () => {
+  /* it('Should respond 201 to PATCH request', () => {
 
     validateNum.mockReturnValue(true)
     existsHelper.mockReturnValue(true)
@@ -131,7 +131,7 @@ describe('Test PATCH operation for /games/gameId path', () => {
       .expect(201)
       .expect()
   }) */
-  it('Should respond 400 to GET request', () => {
+  it('Should respond 400 to PATCH request', () => {
 
     validateNum.mockReturnValue(true)
     existsHelper.mockReturnValue(true)

@@ -18,7 +18,7 @@
         - [ ] Test request not a number
     - PATCH on /games/gameId
         - [ ] Test successful request
-        - [ ] Test attempt to change ID
+        - [x] Test attempt to change ID
         - [ ] Test if entry does not exist
     - DELETE on /games/gameId
         - [ ] Test successful request
