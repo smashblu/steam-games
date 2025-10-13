@@ -1,7 +1,7 @@
 const request = require('supertest')
 const { app, server} = require('./index')
 const { listGames, addGame } = require("./database")
-const { existsHelper, validateNum, findProperty, makeList, matchProp } = require('./service')
+const { existsHelper, validateNum, findProperty, makeList, matchProp, updateProps } = require('./service')
 
 jest.mock('./database', () => ({
   listGames: jest.fn(),
@@ -14,6 +14,7 @@ jest.mock('./service', () => ({
   findProperty: jest.fn(),
   makeList: jest.fn(),
   matchProp: jest.fn(),
+  updateProps: jest.fn(),
 }))
 
 afterAll(() => {
@@ -120,17 +121,26 @@ describe('Test GET operation for /games/publisherId path', () => {
 })
 
 describe('Test PATCH operation for /games/gameId path', () => {
-  /* it('Should respond 201 to PATCH request', () => {
+  it('Should respond 201 to PATCH request', () => {
+    const newGame = {
+      gameId: 1,
+      title: 'Another Game'
+    }
 
     validateNum.mockReturnValue(true)
     existsHelper.mockReturnValue(true)
     matchProp.mockReturnValue(false)
+    findProperty.mockReturnValue(testGameList[0])
 
     return request(app)
       .patch('/games/gameId=:gameId')
+      .send(newGame)
       .expect(201)
-      .expect()
-  }) */
+      .expect('Update successful')
+      .then(() => {
+        expect(updateProps).toHaveBeenCalledWith(newGame, testGameList[0])
+      })
+  })
   it('Should respond 400 to PATCH request', () => {
 
     validateNum.mockReturnValue(true)
