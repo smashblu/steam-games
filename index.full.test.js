@@ -32,17 +32,28 @@ describe('Test full POST operation for /games path', () => {
       title: 'Another Game'
     }
     
-  const game = newGame
-  const gameNum = newGame['gameId']
-
-  return request(app)
-    .post('/games')
-    .send(newGame)
-    .expect(201)
-    .expect('Creation successful')
-    .then(() => {
-      testGameList.push(newGame)
-      expect(testGameList[1]).toMatchObject(newGame)
+    return request(app)
+      .post('/games')
+      .send(newGame)
+      .expect(201)
+      .expect('Creation successful')
+      .then(() => {
+        testGameList.push(newGame)
+        expect(testGameList[1]).toMatchObject(newGame)
     })
+  })
+})
+
+describe('Test full DELETE operation for /games/gameId path', () => {
+  it('Should respond 204 to DELETE request', () => {
+
+    return request(app)
+      .delete('/games/gameId=1')
+      .send(testGameList[0])
+      .expect(204)
+      .then(() => {
+        testGameList.splice(0, 2)
+        expect(testGameList).toMatchObject([])
+      })
   })
 })

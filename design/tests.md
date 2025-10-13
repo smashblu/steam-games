@@ -26,9 +26,9 @@
         - [ ] Test request is not a number
 - Endpoint
     - POST on /games
-        - [ ] Full test on endpoint with mock functions for DB only
+        - [x] Full test on endpoint with mock functions for DB only
     - DELETE on /games/gameId
-        - [ ] Full test on endpoint with mock functions for DB only
+        - [x] Full test on endpoint with mock functions for DB only
 
 ## service.js
 
