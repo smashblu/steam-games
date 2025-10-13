@@ -1,17 +1,19 @@
 const request = require('supertest')
 const { app, server} = require('./index')
-const { listGames, addGame } = require("./database")
-const { existsHelper, validateNum, findProperty, makeList, matchProp, updateProps } = require('./service')
+const { listGames, addGame, delGame } = require("./database")
+const { existsHelper, validateNum, findProperty, findPropertyIndex, makeList, matchProp, updateProps } = require('./service')
 
 jest.mock('./database', () => ({
   listGames: jest.fn(),
-  addGame: jest.fn()
+  addGame: jest.fn(),
+  delGame: jest.fn()
 }))
 
 jest.mock('./service', () => ({
   existsHelper: jest.fn(),
   validateNum: jest.fn(),
   findProperty: jest.fn(),
+  findPropertyIndex: jest.fn(),
   makeList: jest.fn(),
   matchProp: jest.fn(),
   updateProps: jest.fn(),
@@ -151,5 +153,33 @@ describe('Test PATCH operation for /games/gameId path', () => {
       .patch('/games/gameId=:gameId')
       .expect(400)
       .expect('Game ID cannot be changed')
+  })
+})
+
+describe('Test DELETE operation for /games/gameId path', () => {
+  it('Should respond 204 to DELETE request', () => {
+
+    validateNum.mockReturnValue(true)
+    existsHelper.mockReturnValue(true)
+    findPropertyIndex.mockReturnValue(0)
+
+    return request(app)
+      .delete('/games/gameId=:gameId')
+      .send(testGameList[0])
+      .expect(204)
+      // .expect('Deletion successful')
+      .then(() => {
+        expect(delGame).toHaveBeenCalledWith(0)
+      })
+  })
+  it('Should respond 404 to DELETE request', () => {
+
+    validateNum.mockReturnValue(true)
+    existsHelper.mockReturnValue(false)
+    
+    return request(app)
+      .delete('/games/gameId=:gameId')
+      .expect(404)
+      .expect('Game ID does not exist')
   })
 })

@@ -21,8 +21,8 @@
         - [x] Test attempt to change ID
         - [ ] Test if entry does not exist
     - DELETE on /games/gameId
-        - [ ] Test successful request
-        - [ ] Test if entry does not exist
+        - [x] Test successful request
+        - [x] Test if entry does not exist
         - [ ] Test request is not a number
 - Endpoint
     - POST on /games
