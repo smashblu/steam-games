@@ -36,7 +36,7 @@ const testGameList = [
 listGames.mockReturnValue(testGameList)
 
 describe('Test GET operation for /games path', () => {
-  it('Should respond 200 to GET request', () => {
+  it('Should respond 200 to a successful GET request', () => {
     return request(app)
       .get('/games')
       .expect(200)
@@ -45,7 +45,7 @@ describe('Test GET operation for /games path', () => {
 })
 
 describe('Test POST operation for /games path', () => {
-  it('Should respond 201 to POST request with new game', () => {
+  it('Should respond 201 to a successful POST request with new game', () => {
     const newGame = {
       gameId: 2,
       title: 'Another Game'
@@ -75,7 +75,7 @@ describe('Test POST operation for /games path', () => {
 })
 
 describe('Test GET operation for /games/gameId path', () => {
-  it('Should respond 200 to GET request', () => {
+  it('Should respond 200 to a successful GET request', () => {
 
     validateNum.mockReturnValue(true)
     existsHelper.mockReturnValue(true)
@@ -86,7 +86,7 @@ describe('Test GET operation for /games/gameId path', () => {
       .expect(200)
       .expect(testGameList[0])
   })
-  it('Should respond 404 to GET request', () => {
+  it('Should respond 404 to GET request when the gameId does not exist', () => {
 
     validateNum.mockReturnValue(true)
     existsHelper.mockReturnValue(false)
@@ -110,7 +110,7 @@ describe('Test GET operation for /games/publisherId path', () => {
       .expect(200)
       .expect(testGameList)
   })
-  it('Should respond 404 to GET request', () => {
+  it('Should respond 404 to GET request when publisherId does not exist', () => {
 
     validateNum.mockReturnValue(true)
     existsHelper.mockReturnValue(false)
@@ -123,7 +123,7 @@ describe('Test GET operation for /games/publisherId path', () => {
 })
 
 describe('Test PATCH operation for /games/gameId path', () => {
-  it('Should respond 201 to PATCH request', () => {
+  it('Should respond 201 to a successful PATCH request', () => {
     const newGame = {
       gameId: 1,
       title: 'Another Game'
@@ -143,7 +143,7 @@ describe('Test PATCH operation for /games/gameId path', () => {
         expect(updateProps).toHaveBeenCalledWith(newGame, testGameList[0])
       })
   })
-  it('Should respond 400 to PATCH request', () => {
+  it('Should respond 400 to PATCH request when trying to update gameId', () => {
 
     validateNum.mockReturnValue(true)
     existsHelper.mockReturnValue(true)
@@ -157,7 +157,7 @@ describe('Test PATCH operation for /games/gameId path', () => {
 })
 
 describe('Test DELETE operation for /games/gameId path', () => {
-  it('Should respond 204 to DELETE request', () => {
+  it('Should respond 204 to a successful DELETE request', () => {
 
     validateNum.mockReturnValue(true)
     existsHelper.mockReturnValue(true)
@@ -171,7 +171,7 @@ describe('Test DELETE operation for /games/gameId path', () => {
         expect(delGame).toHaveBeenCalledWith(0)
       })
   })
-  it('Should respond 404 to DELETE request', () => {
+  it('Should respond 404 to DELETE request for a gameId that does not exist', () => {
 
     validateNum.mockReturnValue(true)
     existsHelper.mockReturnValue(false)
