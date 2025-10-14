@@ -167,7 +167,6 @@ describe('Test DELETE operation for /games/gameId path', () => {
       .delete('/games/gameId=:gameId')
       .send(testGameList[0])
       .expect(204)
-      // .expect('Deletion successful')
       .then(() => {
         expect(delGame).toHaveBeenCalledWith(0)
       })
