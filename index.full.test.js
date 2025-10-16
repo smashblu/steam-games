@@ -49,7 +49,6 @@ describe('Test full DELETE operation for /games/gameId path', () => {
 
     return request(app)
       .delete('/games/gameId=1')
-      .send(testGameList[0])
       .expect(204)
       .then(() => {
         testGameList.splice(0, 2)
