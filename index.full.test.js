@@ -1,7 +1,6 @@
 jest.mock('./database', () => ({
   listGames: jest.fn(),
   addGame: jest.fn((obj) => {
-    console.log('Was called? obj: ', obj)
     testGameList.push(obj)
   }),
   delGame: jest.fn()
@@ -26,17 +25,14 @@ const testGameList = [
     }
   }
 ]
+const newGame = {
+  gameId: 2,
+  title: 'Another Game'
+}
 listGames.mockReturnValue(testGameList)
 
 describe('Test full POST operation for /games path', () => {
   it('Should respond 201 to POST request with new game', () => {
-    const newGame = {
-      gameId: 2,
-      title: 'Another Game'
-    }
-    
-    preTestList = testGameList
-    
     return request(app)
       .post('/games')
       .send(newGame)
@@ -55,8 +51,8 @@ describe('Test full DELETE operation for /games/gameId path', () => {
       .delete('/games/gameId=1')
       .expect(204)
       .then(() => {
-        testGameList.splice(0, 2)
-        expect(testGameList).toMatchObject([])
+        testGameList.splice(0, 1)
+        expect(testGameList[0]).toMatchObject(newGame)
       })
   })
 })
