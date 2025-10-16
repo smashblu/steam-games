@@ -1,6 +1,9 @@
 jest.mock('./database', () => ({
   listGames: jest.fn(),
-  addGame: jest.fn(),
+  addGame: jest.fn((obj) => {
+    console.log('Was called? obj: ', obj)
+    testGameList.push(obj)
+  }),
   delGame: jest.fn()
 }))
 
@@ -32,13 +35,14 @@ describe('Test full POST operation for /games path', () => {
       title: 'Another Game'
     }
     
+    preTestList = testGameList
+    
     return request(app)
       .post('/games')
       .send(newGame)
       .expect(201)
       .expect('Creation successful')
       .then(() => {
-        testGameList.push(newGame)
         expect(testGameList[1]).toMatchObject(newGame)
     })
   })
