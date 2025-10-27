@@ -4,7 +4,9 @@ const { listGames, addGame, delGame } = require("./database")
 const { existsHelper, validateNum, findPropertyIndex } = require('./service')
 
 jest.mock('./database', () => ({
-  listGames: jest.fn(),
+  listGames: jest.fn(() => {
+    return testGameList
+  }),
   addGame: jest.fn((obj) => {
     testGameList.push(obj)
   }),
@@ -29,7 +31,6 @@ const newGame = {
   gameId: 2,
   title: 'Another Game'
 }
-listGames.mockReturnValue(testGameList)
 
 describe('Test full POST operation for /games path', () => {
   it('Should respond 201 to POST request with new game', () => {
