@@ -10,7 +10,9 @@ jest.mock('./database', () => ({
   addGame: jest.fn((obj) => {
     testGameList.push(obj)
   }),
-  delGame: jest.fn()
+  delGame: jest.fn((index) => {
+  testGameList.splice(index, 1)
+  })
 }))
 
 afterAll(() => {
@@ -48,18 +50,14 @@ describe('Test full POST operation for /games path', () => {
 
 describe('Test full DELETE operation for /games/gameId path', () => {
   it('Should respond 204 to DELETE request', () => {
-
-    const preTest = []
-    preTest.push(testGameList[0])
-    preTest.push(newGame)
-
+    
+    expect(listGames()).toBe(testGameList)
+    
     return request(app)
       .delete('/games/gameId=1')
       .expect(204)
       .then(() => {
-        testGameList.splice(0, 1)
         expect(testGameList[0]).toMatchObject(newGame)
-        expect(preTest.length).toEqual(2)
         expect(testGameList.length).toEqual(1)
       })
   })
