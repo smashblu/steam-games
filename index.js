@@ -7,7 +7,7 @@ const { listGames, addGame, delGame } = require('./database.js')
 app.use(express.json())
 
 app.get('/games', (req, res) => {
-  res.send(listGames())
+  res.status(200).send(listGames())
   return
 })
 
@@ -28,7 +28,7 @@ app.get('/games/gameId=:gameId', (req, res) => {
   if (validateNum(gameNum)) {
     if (existsHelper(gameNum, 'gameId')) {
       const foundGame = findProperty('gameId', gameNum)
-      res.send(foundGame)
+      res.status(200).send(foundGame)
       return
     }
     res.status(404).end('Game ID does not exist')
@@ -43,7 +43,7 @@ app.get('/games/publisherId=:publisherId', (req, res) => {
   if (validateNum(pubNum)) {
     if (existsHelper(pubNum, 'publisher', 'publisherId')) {
       const pubList = makeList(pubNum, 'publisher', 'publisherId')
-      res.send(pubList)
+      res.status(200).send(pubList)
       return
     }
     res.status(404).end('Publisher ID does not exist')
@@ -56,17 +56,21 @@ app.get('/games/publisherId=:publisherId', (req, res) => {
 app.patch('/games/gameId=:gameId', (req, res) => {
   const gameNum = parseInt(req.params['gameId'])
   const newGameData = req.body
-  if (existsHelper(gameNum, 'gameId')) {
-    if (matchProp(newGameData, 'gameId', gameNum)) {
-      res.status(400).end('Game ID cannot be changed')
+  if (validateNum(gameNum)) {
+    if (existsHelper(gameNum, 'gameId')) {
+      if (matchProp(newGameData, 'gameId', gameNum)) {
+        res.status(400).end('Game ID cannot be changed')
+        return
+      }
+      const foundGame = findProperty('gameId', gameNum)
+      updateProps(newGameData, foundGame)
+      res.status(201).end('Update successful')
       return
     }
-    const foundGame = findProperty('gameId', gameNum)
-    updateProps(newGameData, foundGame)
-    res.status(201).end('Update successful')
+    res.status(404).end('Game ID does not exist')
     return
   }
-  res.status(404).end('Game ID does not exist')
+  res.status(400).end('Game ID is not a number')
   return
 })
 
@@ -86,7 +90,9 @@ app.delete('/games/gameId=:gameId', (req, res) => {
   return
 })
 
-app.listen(port, () => {
+const server = app.listen(port, () => {
   console.log(`Steam Games listening on port ${port}`)
   return
 })
+
+module.exports = { app, server }
