@@ -1,3 +1,6 @@
+dotenv = require('dotenv').config()
+const mysql = require('mysql2')
+
 const gameRatings = [
   'Rating Pending',
   'Rating Pending - Likely Mature 17+',
