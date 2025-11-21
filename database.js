@@ -1,12 +1,5 @@
 dotenv = require('dotenv').config()
-const mysql = require('mysql2')
-
-const connection = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: process.env.MYSQL_ROOT_PASSWORD
-  database: 'steam',
-})
+const mysql = require('mysql2/promise')
 
 const gameRatings = [
   'Rating Pending',
@@ -79,13 +72,31 @@ const dummyGames = [
   },
 ]
 
-const listGames = () => {
-  return dummyGames
+const listGames = async () => {
+  try {
+    const connection = await mysql.createConnection({
+      host: 'localhost',
+      user: 'root',
+      password: process.env.MYSQL_ROOT_PASSWORD,
+      database: 'steam',
+    })
+
+    const [results, fields] = await connection.query(
+      'SELECT * FROM `games`',
+    )
+
+  return results
+  } catch (err) {
+    console.log(err)
+  }
+  return []
 }
+
 const addGame = (obj) => {
   dummyGames.push(obj)
   return
 }
+
 const delGame = (index) => {
   dummyGames.splice(index, 1)
   return
