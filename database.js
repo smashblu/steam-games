@@ -90,7 +90,7 @@ const listGames = async () => {
       title: r.title,
       releaseDate: r.releaseDate,
       rating: r.rating,
-      currentPrice: r.currentPrice,
+      currentPrice: parseFloat(r.currentPrice),
       publisher: {
         publisherId: r.publisherId,
         name: r.name
