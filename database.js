@@ -81,7 +81,7 @@ const listGames = async () => {
       database: process.env.MYSQL_DATABASE,
     })
 
-    const [results, fields] = await connection.query(
+    const [results, fields] = await connection.execute(
       'SELECT * FROM `games`',
     )
 
