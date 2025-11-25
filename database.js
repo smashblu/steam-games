@@ -81,9 +81,21 @@ const listGames = async () => {
       database: process.env.MYSQL_DATABASE,
     })
 
-    const [results, fields] = await connection.execute(
+    const [rows, fields] = await connection.execute(
       'SELECT games.id AS gameId, games.title, games.releaseDate, games.rating, games.currentPrice, games.publisherId, publisher.name FROM games LEFT JOIN publisher ON games.publisherId=publisher.id',
     )
+
+    const results = rows.map(r => ({
+      gameId: r.gameId,
+      title: r.title,
+      releaseDate: r.releaseDate,
+      rating: r.rating,
+      currentPrice: r.currentPrice,
+      publisher: {
+        publisherId: r.publisherId,
+        name: r.name
+      }
+    }))
 
     return results
   } catch (err) {
