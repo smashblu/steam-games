@@ -85,7 +85,6 @@ const listGames = async () => {
       'SELECT * FROM `games`',
     )
 
-  console.log(results)
   return results
   } catch (err) {
     console.log(err)
@@ -93,12 +92,12 @@ const listGames = async () => {
   return []
 }
 
-const addGame = (obj) => {
+const addGame = async (obj) => {
   dummyGames.push(obj)
   return
 }
 
-const delGame = (index) => {
+const delGame = async (index) => {
   dummyGames.splice(index, 1)
   return
 }

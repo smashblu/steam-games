@@ -27,41 +27,41 @@ describe('Test validateNum', () => {
 })
 
 describe('Test existsHelper', () => {
-  it('Nested object should return true', () => {
-    expect(existsHelper(1, 'publisher', 'publisherId')).toBe(true)
+  it('Nested object should return true', async () => {
+    expect(await existsHelper(1, 'publisher', 'publisherId')).toBe(true)
   })
-  it('Nested object should return false', () => {
-    expect(existsHelper(500000, 'publisher', 'publisherId')).toBe(false)
+  it('Nested object should return false', async () => {
+    expect(await existsHelper(500000, 'publisher', 'publisherId')).toBe(false)
   })
-  it('Object should return true', () => {
-    expect(existsHelper(1, 'gameId')).toBe(true)
+  it('Object should return true', async () => {
+    expect(await existsHelper(1, 'gameId')).toBe(true)
   })
-  it('Object should return false', () => {
-    expect(existsHelper('Blonic the Bledgeblog 30', 'title')).toBe(false)
+  it('Object should return false', async () => {
+    expect(await existsHelper('Blonic the Bledgeblog 30', 'title')).toBe(false)
   })
 })
 
 describe('Test findProperty', () => {
-  it('Should return target object', () => {
-    expect(findProperty('gameId', 1)).toBe(testGameList[0])
+  it('Should return target object', async () => {
+    expect(await findProperty('gameId', 1)).toBe(testGameList[0])
   })
-  it('Should return target undefined object', () => {
-    expect(findProperty('gameId', 200000)).toBe(undefined)
+  it('Should return target undefined object', async () => {
+    expect(await findProperty('gameId', 200000)).toBe(undefined)
   })
-  it('Should return target undefined object', () => {
-    expect(findProperty('someId', 1)).toBe(undefined)
+  it('Should return target undefined object', async () => {
+    expect(await findProperty('someId', 1)).toBe(undefined)
   })
 })
 
 describe('Test findPropertyIndex', () => {
-  it('Should return target object index', () => {
-    expect(findPropertyIndex('gameId', 1)).toBe(0)
+  it('Should return target object index', async () => {
+    expect(await findPropertyIndex('gameId', 1)).toBe(0)
   })
-  it('Should return target negative index', () => {
-    expect(findPropertyIndex('gameId', 200000)).toBe(-1)
+  it('Should return target negative index', async () => {
+    expect(await findPropertyIndex('gameId', 200000)).toBe(-1)
   })
-  it('Should return target negative index', () => {
-    expect(findPropertyIndex('someId', 1)).toBe(-1)
+  it('Should return target negative index', async () => {
+    expect(await findPropertyIndex('someId', 1)).toBe(-1)
   })
 })
 
@@ -94,10 +94,10 @@ describe('Test matchProp', () => {
 })
 
 describe('Test makeList', () => {
-  it('Should return list from listGames()', () => {
-    expect(makeList(1, 'publisher', 'publisherId')).toStrictEqual(testGameList)
+  it('Should return list from listGames()', async () => {
+    expect(await makeList(1, 'publisher', 'publisherId')).toStrictEqual(testGameList)
   })
-  it('Should return empty list', () => {
-    expect(makeList(2, 'publisher', 'publisherId')).toStrictEqual([])
+  it('Should return empty list', async () => {
+    expect(await makeList(2, 'publisher', 'publisherId')).toStrictEqual([])
   })
 })

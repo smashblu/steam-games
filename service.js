@@ -7,16 +7,16 @@ const validateNum = num => {
   return true
 }
 
-const existsHelper = (target, val, nestedVal) => {
+const existsHelper = async (target, val, nestedVal) => {
   if (nestedVal) {
-    for (const item of listGames()) {
+    for (const item of await listGames()) {
       if (item[val][nestedVal] === target) {
         return true
       }
     }
     return false
   }
-for (const item of listGames()) {
+for (const item of await listGames()) {
   if (item[val] === target) {
     return true
   }
@@ -24,13 +24,13 @@ for (const item of listGames()) {
 return false
 }
 
-const findProperty = (el, target) => {
-  return listGames().find((element) => 
+const findProperty = async (el, target) => {
+  return await listGames().find((element) => 
   element[el] === target
 )}
 
-const findPropertyIndex = (el, target) => {
-  return listGames().findIndex((element) => 
+const findPropertyIndex = async (el, target) => {
+  return await listGames().findIndex((element) => 
   element[el] === target
 )}
 
@@ -52,9 +52,9 @@ const matchProp = (obj, prop, curr) => {
   return false
 }
 
-const makeList = (target, prop, val) => {
+const makeList = async (target, prop, val) => {
   const list = []
-  for (game of listGames()) {
+  for (game of await listGames()) {
     if (game[prop][val] === target) {
       list.push(game)
     }
