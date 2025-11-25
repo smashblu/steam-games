@@ -82,10 +82,10 @@ const listGames = async () => {
     })
 
     const [results, fields] = await connection.execute(
-      'SELECT * FROM `games`',
+      'SELECT games.id AS gameId, games.title, games.releaseDate, games.rating, games.currentPrice, games.publisherId, publisher.name FROM games LEFT JOIN publisher ON games.publisherId=publisher.id',
     )
 
-  return results
+    return results
   } catch (err) {
     console.log(err)
   }
