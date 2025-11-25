@@ -75,16 +75,17 @@ const dummyGames = [
 const listGames = async () => {
   try {
     const connection = await mysql.createConnection({
-      host: 'localhost',
-      user: 'root',
-      password: process.env.MYSQL_ROOT_PASSWORD,
-      database: 'steam',
+      host: process.env.MYSQL_HOST,
+      user: process.env.MYSQL_USER,
+      password: process.env.MYSQL_PASSWORD,
+      database: process.env.MYSQL_DATABASE,
     })
 
     const [results, fields] = await connection.query(
       'SELECT * FROM `games`',
     )
 
+  console.log(results)
   return results
   } catch (err) {
     console.log(err)
