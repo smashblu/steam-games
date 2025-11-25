@@ -25,12 +25,14 @@ return false
 }
 
 const findProperty = async (el, target) => {
-  return await listGames().find((element) => 
+  const gamesObj = await listGames()
+  return gamesObj.find((element) => 
   element[el] === target
 )}
 
 const findPropertyIndex = async (el, target) => {
-  return await listGames().findIndex((element) => 
+  const gamesObj = await listGames()
+  return gamesObj.findIndex((element) => 
   element[el] === target
 )}
 
