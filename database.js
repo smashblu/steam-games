@@ -105,7 +105,22 @@ const listGames = async () => {
 }
 
 const addGame = async (obj) => {
-  dummyGames.push(obj)
+  try {
+    const connection = await mysql.createConnection({
+      host: process.env.MYSQL_HOST,
+      user: process.env.MYSQL_USER,
+      password: process.env.MYSQL_PASSWORD,
+      database: process.env.MYSQL_DATABASE,
+    })
+
+    const [result, fields] = await connection.execute(
+      'INSERT INTO games (title, releaseDate, rating, publisherId, currentPrice) VALUES (?, ?, ?, ?, ?)', [obj['title'], obj['releaseDate'], obj['rating'], obj['publisher']['publisherId'], obj['currentPrice']]
+    )
+
+    return
+  } catch (err) {
+    console.log(err)
+  }
   return
 }
 
