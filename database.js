@@ -1,7 +1,7 @@
 dotenv = require('dotenv').config()
 const mysql = require('mysql2/promise')
 
-const gameRatings = [
+/* const gameRatings = [
   'Rating Pending',
   'Rating Pending - Likely Mature 17+',
   'Everyone',
@@ -70,7 +70,7 @@ const dummyGames = [
     currentPrice: 69.99,
     publisher: dummyPublishers[3]
   },
-]
+] */
 
 const listGames = async () => {
   try {
