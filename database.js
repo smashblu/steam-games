@@ -1,5 +1,15 @@
 dotenv = require('dotenv').config()
 const mysql = require('mysql2/promise')
+let connection
+const initDB = async () => {
+  connection = await mysql.createConnection({
+    host: process.env.MYSQL_HOST,
+    user: process.env.MYSQL_USER,
+    password: process.env.MYSQL_PASSWORD,
+    database: process.env.MYSQL_DATABASE,
+  })
+}
+initDB()
 
 /* const gameRatings = [
   'Rating Pending',
@@ -74,13 +84,6 @@ const dummyGames = [
 
 const listGames = async () => {
   try {
-    const connection = await mysql.createConnection({
-      host: process.env.MYSQL_HOST,
-      user: process.env.MYSQL_USER,
-      password: process.env.MYSQL_PASSWORD,
-      database: process.env.MYSQL_DATABASE,
-    })
-
     const [rows, fields] = await connection.execute(
       'SELECT games.id AS gameId, games.title, games.releaseDate, games.rating, games.currentPrice, games.publisherId, publisher.name FROM games LEFT JOIN publisher ON games.publisherId=publisher.id',
     )
@@ -106,12 +109,6 @@ const listGames = async () => {
 
 const addGame = async (obj) => {
   try {
-    const connection = await mysql.createConnection({
-      host: process.env.MYSQL_HOST,
-      user: process.env.MYSQL_USER,
-      password: process.env.MYSQL_PASSWORD,
-      database: process.env.MYSQL_DATABASE,
-    })
 
     const [result, fields] = await connection.execute(
       'INSERT INTO games (title, releaseDate, rating, publisherId, currentPrice) VALUES (?, ?, ?, ?, ?)', [obj['title'], obj['releaseDate'], obj['rating'], obj['publisher']['publisherId'], obj['currentPrice']]
