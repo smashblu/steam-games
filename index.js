@@ -38,21 +38,6 @@ app.get('/games/gameId=:gameId', async (req, res) => {
   return
 })
 
-app.get('/games/publisherId=:publisherId', async (req, res) => {
-  const pubNum = parseInt(req.params['publisherId'])
-  if (validateNum(pubNum)) {
-    if (await existsHelper(pubNum, 'publisher', 'publisherId')) {
-      const pubList = await makeList(pubNum, 'publisher', 'publisherId')
-      res.status(200).send(pubList)
-      return
-    }
-    res.status(404).end('Publisher ID does not exist')
-    return
-  }
-  res.status(400).end('Publisher ID is not a number')
-  return
-})
-
 app.patch('/games/gameId=:gameId', async (req, res) => {
   const gameNum = parseInt(req.params['gameId'])
   const newGameData = req.body
@@ -87,6 +72,21 @@ app.delete('/games/gameId=:gameId', async (req, res) => {
     return
   }
   res.status(400).end('Game ID is not a number')
+  return
+})
+
+app.get('/games/publisherId=:publisherId', async (req, res) => {
+  const pubNum = parseInt(req.params['publisherId'])
+  if (validateNum(pubNum)) {
+    if (await existsHelper(pubNum, 'publisher', 'publisherId')) {
+      const pubList = await makeList(pubNum, 'publisher', 'publisherId')
+      res.status(200).send(pubList)
+      return
+    }
+    res.status(404).end('Publisher ID does not exist')
+    return
+  }
+  res.status(400).end('Publisher ID is not a number')
   return
 })
 
