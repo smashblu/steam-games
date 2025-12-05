@@ -7,6 +7,7 @@ const { listGames, addGame, delGame } = require('./database.js')
 app.use(express.json())
 
 app.get('/games', async (req, res) => {
+  filters = req.query
   res.status(200).send(await listGames())
   return
 })
