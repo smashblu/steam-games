@@ -85,7 +85,7 @@ const dummyGames = [
 const listGames = async () => {
   try {
     const [rows, fields] = await connection.execute(
-      'SELECT games.id AS gameId, games.title, games.releaseDate, games.rating, games.currentPrice, games.publisherId, publisher.name FROM games LEFT JOIN publisher ON games.publisherId=publisher.id',
+      'SELECT games.id AS gameId, games.title, games.releaseDate, games.rating, games.currentPrice, games.publisherId, publisher.name FROM games LEFT JOIN publisher ON games.publisherId=publisher.id LIMIT 25',
     )
 
     const results = rows.map(r => ({
