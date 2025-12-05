@@ -110,8 +110,19 @@ const listGames = async () => {
 const addGame = async (obj) => {
   try {
 
-    const [result, fields] = await connection.execute(
-      'INSERT INTO games (title, releaseDate, rating, publisherId, currentPrice) VALUES (?, ?, ?, ?, ?)', [obj['title'], obj['releaseDate'], obj['rating'], obj['publisher']['publisherId'], obj['currentPrice']]
+    const queryVals = []
+    for (const [key, val] of Object.entries(obj).sort()) {
+      if (key === 'publisher') {
+        queryVals.push(val['publisherId'])
+      } else if (key === 'gameId') {
+        // Skip
+      } else {
+        queryVals.push(val)
+      }
+    }
+    
+    const [rows, fields] = await connection.execute(
+      'INSERT INTO games (currentPrice, publisherId, rating, releaseDate, title) VALUES (?, ?, ?, ?, ?)', queryVals
     )
 
     return
