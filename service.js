@@ -7,7 +7,7 @@ const validateNum = num => {
   return true
 }
 
-const existsHelper = async (target, val, nestedVal) => {
+/* const existsHelper = async (target, val, nestedVal) => {
   if (nestedVal) {
     for (const item of await listGames()) {
       if (item[val][nestedVal] === target) {
@@ -22,7 +22,7 @@ for (const item of await listGames()) {
   }
 }
 return false
-}
+} */
 
 const findProperty = async (el, target) => {
   const gamesObj = await listGames()
@@ -64,4 +64,4 @@ const makeList = async (target, prop, val) => {
   return list
 }
 
-module.exports = { validateNum, existsHelper, findProperty, findPropertyIndex, updateProps, matchProp, makeList }
+module.exports = { validateNum, findProperty, findPropertyIndex, updateProps, matchProp, makeList }

@@ -82,10 +82,39 @@ const dummyGames = [
   },
 ] */
 
+const findById = async (key, id) => {
+  try {
+    const [rows, fields] = await connection.execute(
+      `SELECT ${key} FROM games WHERE id = ?`,
+      [id]
+    )
+    return rows[0][key]
+  } catch (err) {
+    console.log(err)
+  }
+  return
+}
+
+const existsHelper = async (key, target) => {
+  try {
+    const [rows, fields] = await connection.execute(
+      `SELECT ${key} FROM games WHERE title = ?`, 
+      [target]
+    )
+    if (rows[0][key] === target) {
+      return true
+    }
+    return false
+  } catch (err) {
+    console.log(err)
+  }
+return
+}
+
 const listGames = async () => {
   try {
     const [rows, fields] = await connection.execute(
-      'SELECT games.id AS gameId, games.title, games.releaseDate, games.rating, games.currentPrice, games.publisherId, publisher.name FROM games LEFT JOIN publisher ON games.publisherId=publisher.id LIMIT 25',
+      'SELECT games.id AS gameId, games.title, games.releaseDate, games.rating, games.currentPrice, games.publisherId, publisher.name FROM games LEFT JOIN publisher ON games.publisherId=publisher.id LIMIT 25'
     )
 
     const results = rows.map(r => ({
@@ -109,7 +138,6 @@ const listGames = async () => {
 
 const addGame = async (obj) => {
   try {
-
     const queryVals = []
     for (const [key, val] of Object.entries(obj).sort()) {
       if (key === 'publisher') {
@@ -137,4 +165,4 @@ const delGame = async (index) => {
   return
 }
 
-module.exports = { listGames, addGame, delGame }
+module.exports = { findById, existsHelper, listGames, addGame, delGame }

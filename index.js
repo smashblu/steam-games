@@ -1,8 +1,8 @@
 const express = require('express')
 const app = express()
 const port = 3000
-const { validateNum, existsHelper, findProperty, findPropertyIndex, updateProps, matchProp, makeList } = require('./service.js')
-const { listGames, addGame, delGame } = require('./database.js')
+const { validateNum, findProperty, findPropertyIndex, updateProps, matchProp, makeList } = require('./service.js')
+const { findById, existsHelper, listGames, addGame, delGame } = require('./database.js')
 
 app.use(express.json())
 
@@ -27,7 +27,8 @@ app.post('/games', async (req, res) => {
 app.get('/games/gameId=:gameId', async (req, res) => {
   const gameNum = parseInt(req.params['gameId'])
   if (validateNum(gameNum)) {
-    if (await existsHelper(gameNum, 'gameId')) {
+    const gameTitle = await findById('title', gameNum)
+    if (await existsHelper('title', gameTitle)) {
       const foundGame = await findProperty('gameId', gameNum)
       res.status(200).send(foundGame)
       return
