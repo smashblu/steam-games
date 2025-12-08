@@ -44,7 +44,7 @@ describe('Test full POST operation for /games path', () => {
       .post('/games')
       .send(newGame)
       .expect(201)
-      .expect('Creation successful')
+      .expect(newGame)
       .then(() => {
         expect(testGameList[1]).toMatchObject(newGame)
     })

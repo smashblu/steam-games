@@ -98,13 +98,13 @@ const findById = async (key, id) => {
 const existsHelper = async (key, target) => {
   try {
     const [rows, fields] = await connection.execute(
-      `SELECT ${key} FROM games WHERE title = ?`, 
+      `SELECT ${key} FROM games WHERE ${key} = ?`, 
       [target]
     )
-    if (rows[0][key] === target) {
-      return true
+    if (rows.length === 0) {
+      return false
     }
-    return false
+    return true
   } catch (err) {
     console.log(err)
   }

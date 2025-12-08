@@ -7,7 +7,6 @@ const { findById, existsHelper, listGames, addGame, delGame } = require('./datab
 app.use(express.json())
 
 app.get('/games', async (req, res) => {
-  filters = req.query
   res.status(200).send(await listGames())
   return
 })
@@ -15,12 +14,19 @@ app.get('/games', async (req, res) => {
 app.post('/games', async (req, res) => {
   const game = req.body
   const gameNum = req.body['gameId']
-  if (await existsHelper(gameNum, 'gameId')) {
-    res.status(409).end('Game ID already exists, no action taken')
+  const gameTitle = req.body['title']
+  if (await existsHelper('title', gameTitle)) {
+    res.status(409).end('Game with same title already exists, no action taken')
     return
   }
+  if (game.hasOwnProperty('gameId')) {
+    if (await existsHelper('id', gameNum)) {
+      res.status(409).end('Game ID already exists, no action taken')
+      return
+    }
+  }
   await addGame(game)
-  res.status(201).end('Creation successful')
+  res.status(201).send(game)
   return
 })
 

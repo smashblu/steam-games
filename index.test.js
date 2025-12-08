@@ -58,7 +58,7 @@ describe('Test POST operation for /games path', () => {
       .post('/games')
       .send(newGame)
       .expect(201)
-      .expect('Creation successful')
+      .expect(newGame)
       .then(() => {
         expect(addGame).toHaveBeenCalledWith(newGame)
       })
@@ -70,7 +70,7 @@ describe('Test POST operation for /games path', () => {
     return request(app)
       .post('/games')
       .send(testGameList[0])
-      .expect('Game ID already exists, no action taken')
+      .expect('Game with same title already exists, no action taken')
       .expect(409)
   })
 })
