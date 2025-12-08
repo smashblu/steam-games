@@ -1,16 +1,17 @@
 const request = require('supertest')
 const { app, server} = require('./index')
-const { listGames, addGame, delGame } = require("./database")
-const { existsHelper, validateNum, findProperty, findPropertyIndex, makeList, matchProp, updateProps } = require('./service')
+const { findById, existsHelper, listGames, addGame, delGame } = require("./database")
+const { validateNum, findProperty, findPropertyIndex, makeList, matchProp, updateProps } = require('./service')
 
 jest.mock('./database', () => ({
+  findById: jest.fn(),
+  existsHelper: jest.fn(),
   listGames: jest.fn(),
   addGame: jest.fn(),
   delGame: jest.fn()
 }))
 
 jest.mock('./service', () => ({
-  existsHelper: jest.fn(),
   validateNum: jest.fn(),
   findProperty: jest.fn(),
   findPropertyIndex: jest.fn(),
@@ -78,6 +79,7 @@ describe('Test GET operation for /games/gameId path', () => {
   it('Should respond 200 to a successful GET request', () => {
 
     validateNum.mockReturnValue(true)
+    findById.mockReturnValue(testGameList[0]['title'])
     existsHelper.mockReturnValue(true)
     findProperty.mockReturnValue(testGameList[0])
 

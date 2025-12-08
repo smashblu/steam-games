@@ -1,9 +1,10 @@
 const request = require('supertest')
 const { app, server} = require('./index')
-const { listGames, addGame, delGame } = require("./database")
-const { existsHelper, validateNum, findPropertyIndex } = require('./service')
+const { findById, existsHelper, listGames, addGame, delGame } = require("./database")
+const { validateNum, findPropertyIndex } = require('./service')
 
 jest.mock('./database', () => ({
+  existsHelper: jest.fn(),
   listGames: jest.fn(() => {
     return testGameList
   }),
@@ -36,6 +37,8 @@ const newGame = {
 
 describe('Test full POST operation for /games path', () => {
   it('Should respond 201 to POST request with new game', () => {
+    
+    existsHelper.mockReturnValue(false)
 
     return request(app)
       .post('/games')
@@ -51,6 +54,7 @@ describe('Test full POST operation for /games path', () => {
 describe('Test full DELETE operation for /games/gameId path', () => {
   it('Should respond 204 to DELETE request', () => {
     
+    existsHelper.mockReturnValue(true)
     expect(listGames()).toBe(testGameList)
     
     return request(app)

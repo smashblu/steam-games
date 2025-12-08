@@ -1,5 +1,5 @@
 const { listGames } = require("./database")
-const { validateNum, existsHelper, findProperty, findPropertyIndex, updateProps, matchProp, makeList } = require("./service")
+const { validateNum, findProperty, findPropertyIndex, updateProps, matchProp, makeList } = require("./service")
 
 jest.mock('./database', () => ({
   listGames: jest.fn()
@@ -23,21 +23,6 @@ describe('Test validateNum', () => {
   })
   it('String should returns false', () => {
     expect(validateNum('test string')).toBe(false)
-  })
-})
-
-describe('Test existsHelper', () => {
-  it('Nested object should return true', async () => {
-    expect(await existsHelper(1, 'publisher', 'publisherId')).toBe(true)
-  })
-  it('Nested object should return false', async () => {
-    expect(await existsHelper(500000, 'publisher', 'publisherId')).toBe(false)
-  })
-  it('Object should return true', async () => {
-    expect(await existsHelper(1, 'gameId')).toBe(true)
-  })
-  it('Object should return false', async () => {
-    expect(await existsHelper('Blonic the Bledgeblog 30', 'title')).toBe(false)
   })
 })
 
