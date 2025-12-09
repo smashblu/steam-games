@@ -8,11 +8,12 @@ app.use(express.json())
 
 app.get('/games', async (req, res) => {
   const filters = req.query
+  let userLimit = 25
   if (filters.limit && filters.limit <= 100) {
-    res.status(200).send(await listGames(filters.limit))
-    return
-  }
-  res.status(200).send(await listGames(25))
+    userLimit = filters.limit
+  } 
+  console.log(userLimit)
+  res.status(200).send(await listGames(userLimit))
   return
 })
 
