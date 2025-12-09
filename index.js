@@ -7,7 +7,12 @@ const { findById, existsHelper, listGames, addGame, delGame } = require('./datab
 app.use(express.json())
 
 app.get('/games', async (req, res) => {
-  res.status(200).send(await listGames())
+  const filters = req.query
+  if (filters.limit && filters.limit <= 100) {
+    res.status(200).send(await listGames(filters.limit))
+    return
+  }
+  res.status(200).send(await listGames(25))
   return
 })
 

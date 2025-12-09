@@ -111,10 +111,10 @@ const existsHelper = async (key, target) => {
 return
 }
 
-const listGames = async () => {
+const listGames = async (limit) => {
   try {
     const [rows, fields] = await connection.execute(
-      'SELECT games.id AS gameId, games.title, games.releaseDate, games.rating, games.currentPrice, games.publisherId, publisher.name FROM games LEFT JOIN publisher ON games.publisherId=publisher.id LIMIT 25'
+      `SELECT games.id AS gameId, games.title, games.releaseDate, games.rating, games.currentPrice, games.publisherId, publisher.name FROM games LEFT JOIN publisher ON games.publisherId=publisher.id LIMIT ${limit}`
     )
 
     const results = rows.map(r => ({
