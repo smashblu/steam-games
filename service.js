@@ -7,23 +7,6 @@ const validateNum = num => {
   return true
 }
 
-/* const existsHelper = async (target, val, nestedVal) => {
-  if (nestedVal) {
-    for (const item of await listGames()) {
-      if (item[val][nestedVal] === target) {
-        return true
-      }
-    }
-    return false
-  }
-for (const item of await listGames()) {
-  if (item[val] === target) {
-    return true
-  }
-}
-return false
-} */
-
 const findProperty = async (el, target) => {
   const gamesObj = await listGames()
   return gamesObj.find((element) => 
