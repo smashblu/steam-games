@@ -12,7 +12,6 @@ app.get('/games', async (req, res) => {
   if (filters.limit && filters.limit <= 100) {
     userLimit = filters.limit
   } 
-  console.log(userLimit)
   res.status(200).send(await listGames(userLimit))
   return
 })

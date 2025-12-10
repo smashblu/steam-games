@@ -82,6 +82,8 @@ const dummyGames = [
   },
 ] */
 
+const formattedQuery = 'games.id AS gameId, games.title, games.releaseDate, games.rating, games.currentPrice, games.publisherId, publisher.name FROM games LEFT JOIN publisher ON games.publisherId=publisher.id'
+
 const findById = async (key, id) => {
   try {
     const [rows, fields] = await connection.execute(
@@ -114,20 +116,10 @@ return
 const listGames = async (limit) => {
   try {
     const [rows, fields] = await connection.execute(
-      `SELECT games.id AS gameId, games.title, games.releaseDate, games.rating, games.currentPrice, games.publisherId, publisher.name FROM games LEFT JOIN publisher ON games.publisherId=publisher.id LIMIT ${limit}`
+      `SELECT ${formattedQuery} LIMIT ${limit}`
     )
 
-    const results = rows.map(r => ({
-      gameId: r.gameId,
-      title: r.title,
-      releaseDate: r.releaseDate,
-      rating: r.rating,
-      currentPrice: parseFloat(r.currentPrice),
-      publisher: {
-        publisherId: r.publisherId,
-        name: r.name
-      }
-    }))
+    const results = SQLtoJSON(rows)
 
     return results
   } catch (err) {
@@ -163,6 +155,21 @@ const addGame = async (obj) => {
 const delGame = async (index) => {
   dummyGames.splice(index, 1)
   return
+}
+
+const SQLtoJSON = (data) => {
+  const processed = data.map(r => ({
+    gameId: r.gameId,
+    title: r.title,
+    releaseDate: r.releaseDate,
+    rating: r.rating,
+    currentPrice: parseFloat(r.currentPrice),
+    publisher: {
+      publisherId: r.publisherId,
+      name: r.name
+    }
+  }))
+  return processed
 }
 
 module.exports = { findById, existsHelper, listGames, addGame, delGame }
