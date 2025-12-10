@@ -84,13 +84,13 @@ const dummyGames = [
 
 const formattedQuery = 'games.id AS gameId, games.title, games.releaseDate, games.rating, games.currentPrice, games.publisherId, publisher.name FROM games LEFT JOIN publisher ON games.publisherId=publisher.id'
 
-const findById = async (key, id) => {
+const findGames = async (term, val) => {
   try {
     const [rows, fields] = await connection.execute(
-      `SELECT ${key} FROM games WHERE id = ?`,
-      [id]
+      `SELECT ${formattedQuery} WHERE ${term} = ${val}`
     )
-    return rows[0][key]
+    const results = SQLtoJSON(rows)
+    return results
   } catch (err) {
     console.log(err)
   }
@@ -118,9 +118,7 @@ const listGames = async (limit) => {
     const [rows, fields] = await connection.execute(
       `SELECT ${formattedQuery} LIMIT ${limit}`
     )
-
     const results = SQLtoJSON(rows)
-
     return results
   } catch (err) {
     console.log(err)
@@ -158,7 +156,7 @@ const delGame = async (index) => {
 }
 
 const SQLtoJSON = (data) => {
-  const processed = data.map(r => ({
+  return data.map(r => ({
     gameId: r.gameId,
     title: r.title,
     releaseDate: r.releaseDate,
@@ -169,7 +167,6 @@ const SQLtoJSON = (data) => {
       name: r.name
     }
   }))
-  return processed
 }
 
-module.exports = { findById, existsHelper, listGames, addGame, delGame }
+module.exports = { findGames, existsHelper, listGames, addGame, delGame }

@@ -2,7 +2,7 @@ const express = require('express')
 const app = express()
 const port = 3000
 const { validateNum, findProperty, findPropertyIndex, updateProps, matchProp, makeList } = require('./service.js')
-const { findById, existsHelper, listGames, addGame, delGame } = require('./database.js')
+const { findGames, existsHelper, listGames, addGame, delGame } = require('./database.js')
 
 app.use(express.json())
 
@@ -38,13 +38,12 @@ app.post('/games', async (req, res) => {
 app.get('/games/gameId=:gameId', async (req, res) => {
   const gameNum = parseInt(req.params['gameId'])
   if (validateNum(gameNum)) {
-    const gameTitle = await findById('title', gameNum)
-    if (await existsHelper('title', gameTitle)) {
-      const foundGame = await findProperty('gameId', gameNum)
-      res.status(200).send(foundGame)
+    const targetGame = await findGames('games.id', gameNum)
+    if (targetGame.length === 0) {
+      res.status(404).end('Game ID does not exist')
       return
     }
-    res.status(404).end('Game ID does not exist')
+    res.status(200).send(targetGame)
     return
   }
   res.status(400).end('Game ID is not a number')
@@ -55,7 +54,7 @@ app.patch('/games/gameId=:gameId', async (req, res) => {
   const gameNum = parseInt(req.params['gameId'])
   const newGameData = req.body
   if (validateNum(gameNum)) {
-    if (await existsHelper(gameNum, 'gameId')) {
+    if (await existsHelper('id', gameNum)) {
       if (matchProp(newGameData, 'gameId', gameNum)) {
         res.status(400).end('Game ID cannot be changed')
         return
