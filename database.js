@@ -133,7 +133,7 @@ const addGame = async (obj) => {
       if (key === 'publisher') {
         queryVals.push(val['publisherId'])
       } else if (key === 'gameId') {
-        // Skip
+        console.debug('Skip adding id (MySQL auto-increment)')
       } else {
         queryVals.push(val)
       }
