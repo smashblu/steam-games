@@ -150,9 +150,17 @@ const addGame = async (obj) => {
   return
 }
 
-const delGame = async (index) => {
-  dummyGames.splice(index, 1)
-  return
+const delGame = async (id) => {
+  try {
+    await connection.execute(
+      `DELETE FROM games WHERE id = ?`, 
+      [id]
+    )
+    return
+  } catch (err) {
+    console.log(err)
+  }
+return
 }
 
 const SQLtoJSON = (data) => {

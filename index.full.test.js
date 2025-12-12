@@ -12,7 +12,7 @@ jest.mock('./database', () => ({
     testGameList.push(obj)
   }),
   delGame: jest.fn((index) => {
-  testGameList.splice(index, 1)
+    testGameList.splice(index, 1)
   })
 }))
 
@@ -56,6 +56,7 @@ describe('Test full DELETE operation for /games/gameId path', () => {
     
     existsHelper.mockReturnValue(true)
     expect(listGames()).toBe(testGameList)
+    delGame(0)
     
     return request(app)
       .delete('/games/gameId=1')

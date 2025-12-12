@@ -74,9 +74,8 @@ app.patch('/games/gameId=:gameId', async (req, res) => {
 app.delete('/games/gameId=:gameId', async (req, res) => {
   const gameNum = parseInt(req.params['gameId'])
   if (validateNum(gameNum)) {
-    if (await existsHelper(gameNum, 'gameId')) {
-      const foundGameIndex = await findPropertyIndex('gameId', gameNum)
-      await delGame(foundGameIndex)
+    if (await existsHelper('id', gameNum)) {
+      await delGame(gameNum)
       res.status(204).end('Deletion successful')
       return
     }

@@ -80,11 +80,9 @@ describe('Test GET operation for /games/gameId path', () => {
 
     validateNum.mockReturnValue(true)
     findGames.mockReturnValue(testGameList[0])
-    existsHelper.mockReturnValue(true)
-    findProperty.mockReturnValue(testGameList[0])
 
     return request(app)
-      .get('/games/gameId=:gameId')
+      .get('/games/gameId=1')
       .expect(200)
       .expect(testGameList[0])
   })
@@ -94,7 +92,7 @@ describe('Test GET operation for /games/gameId path', () => {
     findGames.mockReturnValue([])
     
     return request(app)
-      .get('/games/gameId=:gameId')
+      .get('/games/gameId=1')
       .expect(404)
       .expect('Game ID does not exist')
   })
@@ -137,7 +135,7 @@ describe('Test PATCH operation for /games/gameId path', () => {
     findProperty.mockReturnValue(testGameList[0])
 
     return request(app)
-      .patch('/games/gameId=:gameId')
+      .patch('/games/gameId=1')
       .send(newGame)
       .expect(201)
       .expect('Update successful')
@@ -152,7 +150,7 @@ describe('Test PATCH operation for /games/gameId path', () => {
     matchProp.mockReturnValue(true)
     
     return request(app)
-      .patch('/games/gameId=:gameId')
+      .patch('/games/gameId=1')
       .expect(400)
       .expect('Game ID cannot be changed')
   })
@@ -163,14 +161,12 @@ describe('Test DELETE operation for /games/gameId path', () => {
 
     validateNum.mockReturnValue(true)
     existsHelper.mockReturnValue(true)
-    findPropertyIndex.mockReturnValue(0)
 
     return request(app)
-      .delete('/games/gameId=:gameId')
-      .send(testGameList[0])
+      .delete('/games/gameId=1')
       .expect(204)
       .then(() => {
-        expect(delGame).toHaveBeenCalledWith(0)
+        expect(delGame).toHaveBeenCalledWith(1)
       })
   })
   it('Should respond 404 to DELETE request for a gameId that does not exist', () => {
@@ -179,7 +175,7 @@ describe('Test DELETE operation for /games/gameId path', () => {
     existsHelper.mockReturnValue(false)
     
     return request(app)
-      .delete('/games/gameId=:gameId')
+      .delete('/games/gameId=1')
       .expect(404)
       .expect('Game ID does not exist')
   })
