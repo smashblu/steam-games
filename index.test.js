@@ -102,21 +102,20 @@ describe('Test GET operation for /games/publisherId path', () => {
   it('Should respond 200 to GET request', () => {
 
     validateNum.mockReturnValue(true)
-    existsHelper.mockReturnValue(true)
-    makeList.mockReturnValue(testGameList)
+    findGames.mockReturnValue(testGameList)
     
     return request(app)
-      .get('/games/publisherId=:publisherId')
+      .get('/games/publisherId=1')
       .expect(200)
       .expect(testGameList)
   })
   it('Should respond 404 to GET request when publisherId does not exist', () => {
 
     validateNum.mockReturnValue(true)
-    existsHelper.mockReturnValue(false)
+    findGames.mockReturnValue([])
     
     return request(app)
-      .get('/games/publisherId=:publisherId')
+      .get('/games/publisherId=2')
       .expect(404)
       .expect('Publisher ID does not exist')
   })

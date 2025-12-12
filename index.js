@@ -89,12 +89,12 @@ app.delete('/games/gameId=:gameId', async (req, res) => {
 app.get('/games/publisherId=:publisherId', async (req, res) => {
   const pubNum = parseInt(req.params['publisherId'])
   if (validateNum(pubNum)) {
-    if (await existsHelper(pubNum, 'publisher', 'publisherId')) {
-      const pubList = await makeList(pubNum, 'publisher', 'publisherId')
-      res.status(200).send(pubList)
+    const targetPub = await findGames('publisher.id', pubNum)
+    if (targetPub.length === 0) {
+      res.status(404).end('Publisher ID does not exist')
       return
     }
-    res.status(404).end('Publisher ID does not exist')
+    res.status(200).send(targetPub)
     return
   }
   res.status(400).end('Publisher ID is not a number')
