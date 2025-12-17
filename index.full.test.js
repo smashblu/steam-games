@@ -1,7 +1,7 @@
 const request = require('supertest')
 const { app, server} = require('./index')
 const { findById, existsHelper, listGames, addGame, delGame } = require("./database")
-const { validateNum, findPropertyIndex } = require('./service')
+const { validateNum } = require('./service')
 
 jest.mock('./database', () => ({
   existsHelper: jest.fn(),

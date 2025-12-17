@@ -1,7 +1,7 @@
 const request = require('supertest')
 const { app, server} = require('./index')
 const { findGames, existsHelper, listGames, addGame, delGame } = require("./database")
-const { validateNum, findProperty, findPropertyIndex, makeList, matchProp, updateProps } = require('./service')
+const { validateNum, findProperty, matchProp, updateProps } = require('./service')
 
 jest.mock('./database', () => ({
   findGames: jest.fn(),
@@ -14,8 +14,6 @@ jest.mock('./database', () => ({
 jest.mock('./service', () => ({
   validateNum: jest.fn(),
   findProperty: jest.fn(),
-  findPropertyIndex: jest.fn(),
-  makeList: jest.fn(),
   matchProp: jest.fn(),
   updateProps: jest.fn(),
 }))

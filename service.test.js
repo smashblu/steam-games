@@ -1,5 +1,5 @@
 const { listGames } = require("./database")
-const { validateNum, findProperty, findPropertyIndex, updateProps, matchProp, makeList } = require("./service")
+const { validateNum, findProperty, updateProps, matchProp } = require("./service")
 
 jest.mock('./database', () => ({
   listGames: jest.fn()
@@ -38,18 +38,6 @@ describe('Test findProperty', () => {
   })
 })
 
-describe('Test findPropertyIndex', () => {
-  it('Should return target object index', async () => {
-    expect(await findPropertyIndex('gameId', 1)).toBe(0)
-  })
-  it('Should return target negative index', async () => {
-    expect(await findPropertyIndex('gameId', 200000)).toBe(-1)
-  })
-  it('Should return target negative index', async () => {
-    expect(await findPropertyIndex('someId', 1)).toBe(-1)
-  })
-})
-
 describe('Test updateProps', () => {
   it('Should change specific object properties', () => {
     const testObj = {gameId: 2}
@@ -75,14 +63,5 @@ describe('Test matchProp', () => {
   it('Should match property but not value and return false', () => {
     const testObj = {gameId: 2}
     expect(matchProp(testGameList[0], 'gameId', testObj['gameId'])).toBe(false)
-  })
-})
-
-describe('Test makeList', () => {
-  it('Should return list from listGames()', async () => {
-    expect(await makeList(1, 'publisher', 'publisherId')).toStrictEqual(testGameList)
-  })
-  it('Should return empty list', async () => {
-    expect(await makeList(2, 'publisher', 'publisherId')).toStrictEqual([])
   })
 })

@@ -13,12 +13,6 @@ const findProperty = async (el, target) => {
   element[el] === target
 )}
 
-const findPropertyIndex = async (el, target) => {
-  const gamesObj = await listGames()
-  return gamesObj.findIndex((element) => 
-  element[el] === target
-)}
-
 const updateProps = (target, changes) => {
   for (const key of Object.keys(changes)) {
     if (target.hasOwnProperty(key)) {
@@ -37,14 +31,4 @@ const matchProp = (obj, prop, curr) => {
   return false
 }
 
-const makeList = async (target, prop, val) => {
-  const list = []
-  for (game of await listGames()) {
-    if (game[prop][val] === target) {
-      list.push(game)
-    }
-  }
-  return list
-}
-
-module.exports = { validateNum, findProperty, findPropertyIndex, updateProps, matchProp, makeList }
+module.exports = { validateNum, findProperty, updateProps, matchProp }
