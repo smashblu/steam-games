@@ -79,6 +79,34 @@ const addGame = async (obj) => {
   return
 }
 
+const updateGame = async (obj, id) => {
+  try {
+    const queryKeys = []
+    let changePub = ''
+    for (const [key, val] of Object.entries(obj).sort()) {
+      if (key === 'publisher') {
+        changePub = ` publisherId = ${val['id']},`
+      } else if (key === 'gameId') {
+        console.debug('Skip adding id (MySQL auto-increment)')
+      } else {
+        queryKeys.push(key)
+      }
+    }
+
+    const statements = queryKeys.map(e => ` ${e} = '${obj[e]}'`)
+    const fullQuery = `UPDATE games SET${changePub}${statements} WHERE id = ${id}`
+
+    await connection.execute(
+      fullQuery
+    )
+
+    return
+  } catch (err) {
+    console.log(err)
+}
+  return
+}
+
 const delGame = async (id) => {
   try {
     await connection.execute(
@@ -106,4 +134,4 @@ const SQLtoJSON = (data) => {
   }))
 }
 
-module.exports = { findGames, existsHelper, listGames, addGame, delGame }
+module.exports = { findGames, existsHelper, listGames, addGame, updateGame, delGame }

@@ -2,7 +2,7 @@ const express = require('express')
 const app = express()
 const port = 3000
 const { validateNum, findProperty, updateProps, matchProp } = require('./service.js')
-const { findGames, existsHelper, listGames, addGame, delGame } = require('./database.js')
+const { findGames, existsHelper, listGames, addGame, updateGame, delGame } = require('./database.js')
 
 app.use(express.json())
 
@@ -59,8 +59,7 @@ app.patch('/games/gameId=:gameId', async (req, res) => {
         res.status(400).end('Game ID cannot be changed')
         return
       }
-      const foundGame = await findProperty('gameId', gameNum)
-      updateProps(newGameData, foundGame)
+      updateGame(newGameData, gameNum)
       res.status(201).end('Update successful')
       return
     }
