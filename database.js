@@ -59,16 +59,23 @@ const addGame = async (obj) => {
   try {
     const queryVals = []
     for (const [key, val] of Object.entries(obj).sort()) {
-      if (key === 'publisher') {
-        queryVals.push(val['publisherId'])
-      } else if (key === 'gameId') {
-        console.debug('Skip adding id (MySQL auto-increment)')
-      } else {
-        queryVals.push(val)
+      switch (key) {      
+        case 'currentPrice':
+        case 'rating':
+        case 'releaseDate':
+        case 'title':
+          queryVals.push(val)
+          break
+        case 'publisher':
+          queryVals.push(val['publisherId'])
+          break
+        case 'gameId':
+        default:
+          break
       }
     }
     
-    const [rows, fields] = await connection.execute(
+    await connection.execute(
       'INSERT INTO games (currentPrice, publisherId, rating, releaseDate, title) VALUES (?, ?, ?, ?, ?)', queryVals
     )
 
@@ -84,12 +91,19 @@ const updateGame = async (obj, id) => {
     const queryKeys = []
     let changePub = ''
     for (const [key, val] of Object.entries(obj).sort()) {
-      if (key === 'publisher') {
-        changePub = ` publisherId = ${val['id']},`
-      } else if (key === 'gameId') {
-        console.debug('Skip adding id (MySQL auto-increment)')
-      } else {
-        queryKeys.push(key)
+      switch (key) {      
+        case 'currentPrice':
+        case 'rating':
+        case 'releaseDate':
+        case 'title':
+          queryKeys.push(key)
+          break
+        case 'publisher':
+          changePub = ` publisherId = ${val['id']},`
+          break
+        case 'gameId':
+        default:
+          break
       }
     }
 
