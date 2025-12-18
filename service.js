@@ -7,12 +7,6 @@ const validateNum = num => {
   return true
 }
 
-const findProperty = async (el, target) => {
-  const gamesObj = await listGames()
-  return gamesObj.find((element) => 
-  element[el] === target
-)}
-
 const updateProps = (target, changes) => {
   for (const key of Object.keys(changes)) {
     if (target.hasOwnProperty(key)) {
@@ -31,4 +25,4 @@ const matchProp = (obj, prop, curr) => {
   return false
 }
 
-module.exports = { validateNum, findProperty, updateProps, matchProp }
+module.exports = { validateNum, updateProps, matchProp }

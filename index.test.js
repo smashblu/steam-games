@@ -1,19 +1,19 @@
 const request = require('supertest')
 const { app, server} = require('./index')
-const { findGames, existsHelper, listGames, addGame, delGame } = require("./database")
-const { validateNum, findProperty, matchProp, updateProps } = require('./service')
+const { findGames, existsHelper, listGames, addGame, updateGame, delGame } = require("./database")
+const { validateNum, updateProps, matchProp } = require('./service')
 
 jest.mock('./database', () => ({
   findGames: jest.fn(),
   existsHelper: jest.fn(),
   listGames: jest.fn(),
   addGame: jest.fn(),
+  updateGame: jest.fn(),
   delGame: jest.fn()
 }))
 
 jest.mock('./service', () => ({
   validateNum: jest.fn(),
-  findProperty: jest.fn(),
   matchProp: jest.fn(),
   updateProps: jest.fn(),
 }))
@@ -129,16 +129,13 @@ describe('Test PATCH operation for /games/gameId path', () => {
     validateNum.mockReturnValue(true)
     existsHelper.mockReturnValue(true)
     matchProp.mockReturnValue(false)
-    findProperty.mockReturnValue(testGameList[0])
+    updateGame.mockReturnValue(newGame)
 
     return request(app)
       .patch('/games/gameId=1')
       .send(newGame)
       .expect(201)
       .expect('Update successful')
-      .then(() => {
-        expect(updateProps).toHaveBeenCalledWith(newGame, testGameList[0])
-      })
   })
   it('Should respond 400 to PATCH request when trying to update gameId', () => {
 

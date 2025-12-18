@@ -1,5 +1,5 @@
 const { listGames } = require("./database")
-const { validateNum, findProperty, updateProps, matchProp } = require("./service")
+const { validateNum, updateProps, matchProp } = require("./service")
 
 jest.mock('./database', () => ({
   listGames: jest.fn()
@@ -23,18 +23,6 @@ describe('Test validateNum', () => {
   })
   it('String should returns false', () => {
     expect(validateNum('test string')).toBe(false)
-  })
-})
-
-describe('Test findProperty', () => {
-  it('Should return target object', async () => {
-    expect(await findProperty('gameId', 1)).toBe(testGameList[0])
-  })
-  it('Should return target undefined object', async () => {
-    expect(await findProperty('gameId', 200000)).toBe(undefined)
-  })
-  it('Should return target undefined object', async () => {
-    expect(await findProperty('someId', 1)).toBe(undefined)
   })
 })
 
