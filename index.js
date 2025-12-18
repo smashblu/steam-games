@@ -59,7 +59,7 @@ app.patch('/games/gameId=:gameId', async (req, res) => {
         res.status(400).end('Game ID cannot be changed')
         return
       }
-      updateGame(newGameData, gameNum)
+      await updateGame(newGameData, gameNum)
       res.status(201).end('Update successful')
       return
     }
