@@ -1,5 +1,3 @@
-const { listGames } = require('./database.js')
-
 const validateNum = num => {
   if (isNaN(num)) {
     return false
