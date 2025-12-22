@@ -21,7 +21,7 @@ const findGames = async (term, val) => {
     const results = SQLtoJSON(rows)
     return results
   } catch (err) {
-    console.log(err)
+    console.error(err)
   }
   return
 }
@@ -37,7 +37,7 @@ const existsHelper = async (key, target) => {
     }
     return true
   } catch (err) {
-    console.log(err)
+    console.error(err)
   }
 return
 }
@@ -50,7 +50,7 @@ const listGames = async (limit) => {
     const results = SQLtoJSON(rows)
     return results
   } catch (err) {
-    console.log(err)
+    console.error(err)
   }
   return []
 }
@@ -81,7 +81,7 @@ const addGame = async (obj) => {
 
     return
   } catch (err) {
-    console.log(err)
+    console.error(err)
   }
   return
 }
@@ -116,7 +116,7 @@ const updateGame = async (obj, id) => {
 
     return
   } catch (err) {
-    console.log(err)
+    console.error(err)
 }
   return
 }
@@ -129,7 +129,7 @@ const delGame = async (id) => {
     )
     return
   } catch (err) {
-    console.log(err)
+    console.error(err)
   }
 return
 }
