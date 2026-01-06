@@ -1,20 +1,19 @@
 const request = require('supertest')
 const { app, server} = require('./index')
-const { listGames, addGame, delGame } = require("./database")
-const { existsHelper, validateNum, findProperty, findPropertyIndex, makeList, matchProp, updateProps } = require('./service')
+const { findGames, existsHelper, listGames, addGame, updateGame, delGame } = require("./database")
+const { validateNum, updateProps, matchProp } = require('./service')
 
 jest.mock('./database', () => ({
+  findGames: jest.fn(),
+  existsHelper: jest.fn(),
   listGames: jest.fn(),
   addGame: jest.fn(),
+  updateGame: jest.fn(),
   delGame: jest.fn()
 }))
 
 jest.mock('./service', () => ({
-  existsHelper: jest.fn(),
   validateNum: jest.fn(),
-  findProperty: jest.fn(),
-  findPropertyIndex: jest.fn(),
-  makeList: jest.fn(),
   matchProp: jest.fn(),
   updateProps: jest.fn(),
 }))
@@ -57,7 +56,7 @@ describe('Test POST operation for /games path', () => {
       .post('/games')
       .send(newGame)
       .expect(201)
-      .expect('Creation successful')
+      .expect(newGame)
       .then(() => {
         expect(addGame).toHaveBeenCalledWith(newGame)
       })
@@ -69,7 +68,7 @@ describe('Test POST operation for /games path', () => {
     return request(app)
       .post('/games')
       .send(testGameList[0])
-      .expect('Game ID already exists, no action taken')
+      .expect('Game with same title already exists, no action taken')
       .expect(409)
   })
 })
@@ -78,21 +77,20 @@ describe('Test GET operation for /games/gameId path', () => {
   it('Should respond 200 to a successful GET request', () => {
 
     validateNum.mockReturnValue(true)
-    existsHelper.mockReturnValue(true)
-    findProperty.mockReturnValue(testGameList[0])
+    findGames.mockReturnValue(testGameList[0])
 
     return request(app)
-      .get('/games/gameId=:gameId')
+      .get('/games/gameId=1')
       .expect(200)
       .expect(testGameList[0])
   })
   it('Should respond 404 to GET request when the gameId does not exist', () => {
 
     validateNum.mockReturnValue(true)
-    existsHelper.mockReturnValue(false)
+    findGames.mockReturnValue([])
     
     return request(app)
-      .get('/games/gameId=:gameId')
+      .get('/games/gameId=1')
       .expect(404)
       .expect('Game ID does not exist')
   })
@@ -102,21 +100,20 @@ describe('Test GET operation for /games/publisherId path', () => {
   it('Should respond 200 to GET request', () => {
 
     validateNum.mockReturnValue(true)
-    existsHelper.mockReturnValue(true)
-    makeList.mockReturnValue(testGameList)
+    findGames.mockReturnValue(testGameList)
     
     return request(app)
-      .get('/games/publisherId=:publisherId')
+      .get('/games/publisherId=1')
       .expect(200)
       .expect(testGameList)
   })
   it('Should respond 404 to GET request when publisherId does not exist', () => {
 
     validateNum.mockReturnValue(true)
-    existsHelper.mockReturnValue(false)
+    findGames.mockReturnValue([])
     
     return request(app)
-      .get('/games/publisherId=:publisherId')
+      .get('/games/publisherId=2')
       .expect(404)
       .expect('Publisher ID does not exist')
   })
@@ -132,16 +129,13 @@ describe('Test PATCH operation for /games/gameId path', () => {
     validateNum.mockReturnValue(true)
     existsHelper.mockReturnValue(true)
     matchProp.mockReturnValue(false)
-    findProperty.mockReturnValue(testGameList[0])
+    updateGame.mockReturnValue(newGame)
 
     return request(app)
-      .patch('/games/gameId=:gameId')
+      .patch('/games/gameId=1')
       .send(newGame)
       .expect(201)
       .expect('Update successful')
-      .then(() => {
-        expect(updateProps).toHaveBeenCalledWith(newGame, testGameList[0])
-      })
   })
   it('Should respond 400 to PATCH request when trying to update gameId', () => {
 
@@ -150,7 +144,7 @@ describe('Test PATCH operation for /games/gameId path', () => {
     matchProp.mockReturnValue(true)
     
     return request(app)
-      .patch('/games/gameId=:gameId')
+      .patch('/games/gameId=1')
       .expect(400)
       .expect('Game ID cannot be changed')
   })
@@ -161,14 +155,12 @@ describe('Test DELETE operation for /games/gameId path', () => {
 
     validateNum.mockReturnValue(true)
     existsHelper.mockReturnValue(true)
-    findPropertyIndex.mockReturnValue(0)
 
     return request(app)
-      .delete('/games/gameId=:gameId')
-      .send(testGameList[0])
+      .delete('/games/gameId=1')
       .expect(204)
       .then(() => {
-        expect(delGame).toHaveBeenCalledWith(0)
+        expect(delGame).toHaveBeenCalledWith(1)
       })
   })
   it('Should respond 404 to DELETE request for a gameId that does not exist', () => {
@@ -177,7 +169,7 @@ describe('Test DELETE operation for /games/gameId path', () => {
     existsHelper.mockReturnValue(false)
     
     return request(app)
-      .delete('/games/gameId=:gameId')
+      .delete('/games/gameId=1')
       .expect(404)
       .expect('Game ID does not exist')
   })

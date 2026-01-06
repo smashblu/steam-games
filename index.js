@@ -1,69 +1,65 @@
 const express = require('express')
 const app = express()
 const port = 3000
-const { validateNum, existsHelper, findProperty, findPropertyIndex, updateProps, matchProp, makeList } = require('./service.js')
-const { listGames, addGame, delGame } = require('./database.js')
+const { validateNum, matchProp } = require('./service.js')
+const { findGames, existsHelper, listGames, addGame, updateGame, delGame } = require('./database.js')
 
 app.use(express.json())
 
-app.get('/games', (req, res) => {
-  res.status(200).send(listGames())
+app.get('/games', async (req, res) => {
+  const filters = req.query
+  let userLimit = 25
+  if (filters.limit && filters.limit <= 100) {
+    userLimit = filters.limit
+  } 
+  res.status(200).send(await listGames(userLimit))
   return
 })
 
-app.post('/games', (req, res) => {
-  const game = req.body
+app.post('/games', async (req, res) => {
   const gameNum = req.body['gameId']
-  if (existsHelper(gameNum, 'gameId')) {
-    res.status(409).end('Game ID already exists, no action taken')
+  const gameTitle = req.body['title']
+  const newGameData = req.body
+  if (await existsHelper('title', gameTitle)) {
+    res.status(409).end('Game with same title already exists, no action taken')
     return
   }
-  addGame(game)
-  res.status(201).end('Creation successful')
+  if (newGameData.hasOwnProperty('gameId')) {
+    if (await existsHelper('id', gameNum)) {
+      res.status(409).end('Game ID already exists, no action taken')
+      return
+    }
+  }
+  await addGame(newGameData)
+  res.status(201).send(newGameData)
   return
 })
 
-app.get('/games/gameId=:gameId', (req, res) => {
+app.get('/games/gameId=:gameId', async (req, res) => {
   const gameNum = parseInt(req.params['gameId'])
   if (validateNum(gameNum)) {
-    if (existsHelper(gameNum, 'gameId')) {
-      const foundGame = findProperty('gameId', gameNum)
-      res.status(200).send(foundGame)
+    const targetGame = await findGames('games.id', gameNum)
+    if (targetGame.length === 0) {
+      res.status(404).end('Game ID does not exist')
       return
     }
-    res.status(404).end('Game ID does not exist')
+    res.status(200).send(targetGame)
     return
   }
   res.status(400).end('Game ID is not a number')
   return
 })
 
-app.get('/games/publisherId=:publisherId', (req, res) => {
-  const pubNum = parseInt(req.params['publisherId'])
-  if (validateNum(pubNum)) {
-    if (existsHelper(pubNum, 'publisher', 'publisherId')) {
-      const pubList = makeList(pubNum, 'publisher', 'publisherId')
-      res.status(200).send(pubList)
-      return
-    }
-    res.status(404).end('Publisher ID does not exist')
-    return
-  }
-  res.status(400).end('Publisher ID is not a number')
-  return
-})
-
-app.patch('/games/gameId=:gameId', (req, res) => {
+app.patch('/games/gameId=:gameId', async (req, res) => {
   const gameNum = parseInt(req.params['gameId'])
   const newGameData = req.body
   if (validateNum(gameNum)) {
-    if (existsHelper(gameNum, 'gameId')) {
+    if (await existsHelper('id', gameNum)) {
       if (matchProp(newGameData, 'gameId', gameNum)) {
         res.status(400).end('Game ID cannot be changed')
         return
       }
-      const foundGame = findProperty('gameId', gameNum)
-      updateProps(newGameData, foundGame)
+      await updateGame(newGameData, gameNum)
       res.status(201).end('Update successful')
       return
     }
@@ -74,12 +70,11 @@ app.patch('/games/gameId=:gameId', (req, res) => {
   return
 })
 
-app.delete('/games/gameId=:gameId', (req, res) => {
+app.delete('/games/gameId=:gameId', async (req, res) => {
   const gameNum = parseInt(req.params['gameId'])
   if (validateNum(gameNum)) {
-    if (existsHelper(gameNum, 'gameId')) {
-      const foundGameIndex = findPropertyIndex('gameId', gameNum)
-      delGame(foundGameIndex)
+    if (await existsHelper('id', gameNum)) {
+      await delGame(gameNum)
       res.status(204).end('Deletion successful')
       return
     }
@@ -87,6 +82,21 @@ app.delete('/games/gameId=:gameId', (req, res) => {
     return
   }
   res.status(400).end('Game ID is not a number')
+  return
+})
+
+app.get('/games/publisherId=:publisherId', async (req, res) => {
+  const pubNum = parseInt(req.params['publisherId'])
+  if (validateNum(pubNum)) {
+    const targetPub = await findGames('publisher.id', pubNum)
+    if (targetPub.length === 0) {
+      res.status(404).end('Publisher ID does not exist')
+      return
+    }
+    res.status(200).send(targetPub)
+    return
+  }
+  res.status(400).end('Publisher ID is not a number')
   return
 })
 
