@@ -1,4 +1,4 @@
-FROM node:20-slim AS base
+FROM node:25.6.1 AS base
 
 FROM base AS deps
 WORKDIR /app
@@ -13,7 +13,7 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-FROM node:20-slim AS runner
+FROM node:25.6.1 AS runner
 ENV NODE_ENV=production
 WORKDIR /app
 COPY --from=build /app .
