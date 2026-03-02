@@ -1,7 +1,7 @@
 services:
   api:
     build:
-      context: https://github.com/smashblu/steam-games.git#deployment
+      context: .
     environment:
       - NODE_ENV=${NODE_ENV}
       - MYSQL_HOST=${MYSQL_HOST}
