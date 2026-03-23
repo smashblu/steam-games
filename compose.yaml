@@ -23,7 +23,7 @@ services:
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
     volumes:
       - db-data:/var/lib/mysql
-      - ./migrations/${DATABASE_INIT}:/docker-entrypoint-initdb.d/init.sql
+      - ./migrations:/docker-entrypoint-initdb.d
     ports:
       - "3306:3306"
     healthcheck:
